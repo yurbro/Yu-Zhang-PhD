@@ -1,4 +1,4 @@
-# PhD
+# Yu's PhD Project
 👨‍🎓This repository just stored my whole project codes of ⚡PhD⚡, e.i., 'Digital twin in topical drug formulation design'.
 
 🥇Key words: AI, Formulation Design, Machine Learning, Process Modelling, etc.
