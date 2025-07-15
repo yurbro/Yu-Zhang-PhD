@@ -144,8 +144,8 @@ def main():
     # Hypervolume Contribution
     excel_path = "Multi-Objective Optimisation\\Dataset\\Comparison of raw and optimisation in IVRT FS - Corrected.xlsx"
 
-    df = pd.read_excel(excel_path, sheet_name="R-Epoch-1")      # Choose the correct epoch num. R-Epoch-1, R-Epoch-2-2, R-Epoch-3
-    ref_point = (df["Mean"].min() - 1.0, df["Std"].min() - 1.0)  # TODO:due to the optimisation is maximise these two objectives, so refer point should be set the last best point.
+    df = pd.read_excel(excel_path, sheet_name="R-Epoch-1")      # Choose the correct epoch number: R-Epoch-1, R-Epoch-2-2, R-Epoch-3
+    ref_point = (df["Mean"].min() - 1.0, df["Std"].min() - 1.0)  # TODO: Since the optimization maximizes these two objectives, the reference point should be set to the last best point.
     
     # ref_point = (mu_plus + 1e-6, std_plus + 1e-6)  # Use the last best point as reference point
     ic("Reference Point:", ref_point)

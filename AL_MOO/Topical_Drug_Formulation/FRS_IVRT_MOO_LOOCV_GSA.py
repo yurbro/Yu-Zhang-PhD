@@ -72,7 +72,6 @@ def gpr_loocv_cv(v0, a0, a1, v1, **kwargs):
     Perform LOOCV for Gaussian Process Regression with YuKernel.
     Returns the negative average MSE across all folds (to maximize in BayesianOptimization).
     """
-    # 从 kwargs 中提取 wl 参数
     wl = [kwargs[f'wl{i+1}'] for i in range(len(kwargs)) if f'wl{i+1}' in kwargs]
     loo = LeaveOneOut()
     mse_list = []
@@ -345,12 +344,6 @@ def plot_top_interactions(Si, top_k=3):
 plot_top_interactions(Si, top_k=3)
 
 def plot_interaction_surface(model, scaler_X, param_names, fixed_values, i, j, n_points=30):
-    # model: 已训练好的GPR模型
-    # scaler_X: 用于参数标准化的scaler
-    # param_names: 参数名列表
-    # fixed_values: 其余参数的固定值（如均值）
-    # i, j: 需要画交互作用的两个参数的索引
-    # n_points: 网格密度
 
     xi_range = np.linspace(0, 1, n_points)
     xj_range = np.linspace(0, 1, n_points)
@@ -358,9 +351,9 @@ def plot_interaction_surface(model, scaler_X, param_names, fixed_values, i, j, n
     X_grid = np.tile(fixed_values, (n_points * n_points, 1))
     X_grid[:, i] = Xi.ravel()
     X_grid[:, j] = Xj.ravel()
-    # 反标准化到原始空间（如有需要）
+    # Inverse transform to original space (if needed)
     X_grid_orig = scaler_X.inverse_transform(X_grid)
-    # 预测
+    # Predict
     Y_pred = model.predict(X_grid)
     Y_pred = Y_pred.reshape(Xi.shape)
 

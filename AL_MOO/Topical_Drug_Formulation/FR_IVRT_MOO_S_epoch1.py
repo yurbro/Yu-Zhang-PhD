@@ -45,7 +45,7 @@ from PoI import probability_of_improvement
 class YuKernel(Kernel):
     def __init__(self, v0, wl, a0, a1, v1):
         self.v0 = v0
-        self.wl = np.atleast_1d(wl)  # 确保 wl 是数组
+        self.wl = np.atleast_1d(wl)  # Ensure wl is an array
         self.a0 = a0
         self.a1 = a1
         self.v1 = v1
@@ -57,10 +57,10 @@ class YuKernel(Kernel):
         X = np.atleast_2d(X)
         Y = np.atleast_2d(Y)
 
-        # 确保 self.wl 有正确的形状，例如：
+        # Ensure self.wl has the correct shape, e.g.:
         if self.wl.size != X.shape[-1]:
-            # 这里是错误处理或逻辑调整
-            # 例如，扩展或调整 self.wl 以匹配特征数量
+            # Error handling or logic adjustment
+            # For example, expand or adjust self.wl to match the number of features
             raise ValueError("wl size must match the number of features")
 
         # Exponential term
@@ -148,7 +148,6 @@ def gpr_loocv_cv(v0, a0, a1, v1, **kwargs):
     Perform LOOCV for Gaussian Process Regression with YuKernel.
     Returns the negative average MSE across all folds (to maximize in BayesianOptimization).
     """
-    # 从 kwargs 中提取 wl 参数
     wl = [kwargs[f'wl{i+1}'] for i in range(len(kwargs)) if f'wl{i+1}' in kwargs]
     loo = LeaveOneOut()
     mse_list = []
@@ -233,11 +232,9 @@ Good: Ave-s4: random_state=12, shuffle=True; upper_bound = 1e-03, lower_bound = 
 
 ic(formulas_df, c_df)
 
-# 从配方数据中提取特征
-X = np.array(formulas_df.iloc[:, 1:].values)
+X = np.array(formulas_df.iloc[:, 1:].values)  # Extract features from formulation data
 
-# 从C数据中提取标签
-y = np.array(c_df.iloc[:, -1].values)     # TODO: Just use the final sampling data t28 as the target data
+y = np.array(c_df.iloc[:, -1].values)     # TODO: Just use the final sampling data t28 as the target data (Extract labels from C data)
 ic(X.shape, y.shape)
 
 # Calculate the mean of the target data
@@ -251,7 +248,7 @@ ic(y_final, y_final.shape, max_y)
 # Split data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=11) # Ave: 4, 9, 44  ave-s4: 12, 14; FS,SR: 4, 1, 6(0.99), 7(GOOD), 10, 11, 12  
 # SR-Corrected:6,7,9,10
-# LHS-S: 7, 6 (GOOD), 10 (Full big than other), 11 (half more than best), 14 （1e2, 1/3 more than）
+# LHS-S: 7, 6 (GOOD), 10 (Full bigger than others), 11 (half more than best), 14 (1e2, 1/3 more than)
 
 # Standardize the data
 scaler_X = StandardScaler()
@@ -272,12 +269,10 @@ ic(X_train_scaled, y_train_scaled)
 # xu = np.array([int(x)+1 for x in X_max])  # upper bounds based on the int(X_max) 
 # ic(xl, xu)
 
-# 你的实际输入范围
-X_lower = np.array([20.00, 10.00, 10.00])  # lower bounds of ibuprofen excipients
-X_upper = np.array([30.00, 20.00, 20.00])   # upper bounds of ibuprofen excipients
+X_lower = np.array([20.00, 10.00, 10.00])  # Actual lower bounds of ibuprofen excipients
+X_upper = np.array([30.00, 20.00, 20.00])   # Actual upper bounds of ibuprofen excipients
 
-# 用训练集的scaler进行标准化
-xl = scaler_X.transform([X_lower])[0]
+xl = scaler_X.transform([X_lower])[0]  # Standardize using training set scaler
 xu = scaler_X.transform([X_upper])[0]
 ic(xl, xu)
 
@@ -315,7 +310,6 @@ best_params = optimizer.max['params']
 # Save the best hyperparameters to an Excel file
 pd.DataFrame([best_params]).to_excel('Multi-Objective Optimisation\Dataset\\fulldata-s\Bayesian_Optimisation_Results_fulldata.xlsx', index=False)
 
-# 使用最优参数创建新的高斯过程回归模型
 best_gpr = GaussianProcessRegressor(kernel=YuKernel(best_params['v0'],
                                                     [best_params['wl1'], best_params['wl2'], best_params['wl3']],
                                                     best_params['a0'],
@@ -323,12 +317,10 @@ best_gpr = GaussianProcessRegressor(kernel=YuKernel(best_params['v0'],
                                                     best_params['v1'])
                                                     # , alpha=noise_var
                                                     , n_restarts_optimizer=10, alpha=1e-10
-                                                    )
+                                                    )  # Create a new Gaussian Process Regression model using the best parameters
 
-# 训练模型
-best_gpr.fit(X_train_scaled, y_train_scaled)
+best_gpr.fit(X_train_scaled, y_train_scaled)  # Train the model
 
-# 使用训练好的模型进行预测
 y_pred_test, sigma_test = best_gpr.predict(X_test_scaled, return_std=True)
 y_pred_test = scaler_y.inverse_transform(y_pred_test.reshape(-1, 1)).flatten()
 # sigma_test = sigma_test * scaler_y.scale_
@@ -339,7 +331,6 @@ ic(y_pred_test, y_test, sigma_test)
 
 mse, rmse, r_squared, mae, evs, mape = evaluate(y_test, y_pred_test)
 
-# 将结果存储在列表中
 table_data = [
     ["Mean Squared Error (MSE)", mse],
     ["Root Mean Squared Error (RMSE)", rmse],
@@ -356,15 +347,12 @@ formatted_params = '\n'.join([f'\033[92m{key}\033[0m: \033[94m{value}\033[0m' fo
 
 print("Best Hyperparameters:\n", formatted_params)
 
-# 记录结束时间
 end_time = time()
 
-# 计算时间差
 elapsed_time = end_time - start_time
 
 X_label = pd.read_excel('Gassian Processes\Permeation_Kernel\IVPT Dataset.xlsx', sheet_name='F1', usecols=[0])  # 从 'F1' 表格中获取时间数据
 
-# 打印时间差
 print(f'Time elapsed: \033[93m{str(timedelta(seconds=elapsed_time))}\033[0m')  # 使用 timedelta 格式化时间
 
 # Calculate the Kolmogorov-Smirnov statistic and the Jensen-Shannon divergence
@@ -379,15 +367,14 @@ js_divergence = jensenshannon(hist1, hist2)
 print(f'Jensen-Shannon Divergence: {js_divergence}')
 
 # ------------------------------------------ Multi-objective Optimization ------------------------------------------
-# 定义一个问题类
 class MyProblem(ElementwiseProblem):
 
     def __init__(self, best_gpr, scaler_X, scaler_y):
-        super().__init__(n_var=3,  # 输入特征数量
-                         n_obj=2,  # 目标数量
-                         n_constr=0,  # 约束条件数量
-                         xl=xl,  # 输入下界                         #  xl=np.array([-2, -2, -2, -2, -2, -2]),  # 输入下界
-                         xu=xu)  # 输入上界                         #  xu=np.array([2, 2, 2, 2, 2, 2]))  # 输入上界
+        super().__init__(n_var=3,  # Number of input features
+                         n_obj=2,  # Number of objectives
+                         n_constr=0,  # Number of constraints
+                         xl=xl,  # Lower bounds for input
+                         xu=xu)  # Upper bounds for input
         
         self.best_gpr = best_gpr
         self.scaler_X = scaler_X
@@ -395,21 +382,21 @@ class MyProblem(ElementwiseProblem):
 
     def _evaluate(self, x, out, *args, **kwargs):
         # x_scaled = self.scaler_X.transform([x])
-        y_pred, y_std = self.best_gpr.predict([x], return_std=True)     # 这里的输出y_std就是标准差了
+        y_pred, y_std = self.best_gpr.predict([x], return_std=True)     # The output y_std is the standard deviation
         # ic(x, y_pred)
 
         y_pred_original = self.scaler_y.inverse_transform(y_pred.reshape(-1, 1)).flatten()
         # y_std_original = y_std * self.scaler_y.scale_
 
         y_std_original = y_std[0]   
-        y_pred_original = y_pred_original.squeeze()  # 去掉维度为1的维度
+        y_pred_original = y_pred_original.squeeze()  # Remove dimensions of size 1
 
         # Just use the final sampling data as the target data
         mean_pred = y_pred_original
         mean_std = y_std_original[-1] 
         # ic(mean_pred, mean_std)
         
-        out["F"] = np.array([-mean_pred, -mean_std])  # 目标函数值
+        out["F"] = np.array([-mean_pred, -mean_std])  # Objective function values
 
 # Callback class to store the variables
 class CollectParetoFronts(Callback):
@@ -422,28 +409,26 @@ class CollectParetoFronts(Callback):
         # print(f'Pareto front shape: {pareto_front.shape}')  # 打印形状以检查
         self.pareto_fronts.append(pareto_front)
 
-# 创建问题实例
+
 problem = MyProblem(best_gpr, scaler_X, scaler_y)
 
-# 创建一个实例用于收集数据
 collect_pf = CollectParetoFronts()
 
 # define the Crossover and Mutation
 # crossover = {'name': 'real_sbx', 'prob': 0.9, 'eta': 15}    # the probability range between 0.7 - 0.95
 # mutation = {'name': 'real_pm', 'eta': 20}       # the probability range between 0.05 - 0.2
 
-# 创建算法实例
-algorithm = NSGA2(pop_size=10) # 种群大小为20 TODO：back to 10.
+algorithm = NSGA2(pop_size=10) 
 
-# 执行优化
+
 res = minimize(problem,
                algorithm,
-               termination=('n_gen', 50),   # 终止条件为50代
+               termination=('n_gen', 50),   
                callback=collect_pf,
                verbose=True,
                seed=1)
 
-# 输出结果
+
 print("The best solution by NSGA-II algorithm is: ")
 for i in range(len(res.X)):
     print(f"Solution-[{i}]: X = {np.round(res.X[i], 3)}, F = {np.round(res.F[i], 3)}, X_original= {np.round(scaler_X.inverse_transform([res.X[i]]), 3)}")
@@ -454,19 +439,20 @@ pareto_front_df['X'] = [scaler_X.inverse_transform([x]) for x in res.X]
 # pareto_front_df.to_excel(r'C:\Users\yz02380\OneDrive - University of Surrey\Science Research\Codes\Multi-Objective Optimisation\Pareto_animation\pareto_front.xlsx', index=False)
 pareto_front_df.to_excel("Multi-Objective Optimisation\Dataset\\fulldata-s\pareto_front_fulldata.xlsx", index=False)
 
-# # 绘制 Pareto 前端
+
 # plot = Scatter()
 # plot.add(res.F, color="blue", alpha=0.5)
 # plot.show()
 
 get_mean = []
+get_mean = []
 get_std = []
 
-# 绘图
+# Plotting
 plt.figure(figsize=(10, 6))
 for i, pareto_front in enumerate(collect_pf.pareto_fronts):
-    # 假设均值在目标函数的第一个位置，标准差在第二个
-    mean_values = -pareto_front[:, 0]  # 使用负号是因为之前使用负的均值进行了最小化
+    # Assume mean is at the first position of the objective function, std at the second
+    mean_values = -pareto_front[:, 0]  # Use negative sign because minimization was performed on negative mean
     std_values = -pareto_front[:, 1]
     plt.scatter(mean_values, std_values, label=f'Iteration {i+1}', alpha=0.7)
 
@@ -478,10 +464,10 @@ plt.grid(True)
 plt.savefig('Multi-Objective Optimisation\Pareto_animation\\fulldata-s\pareto_fronts_overview_fulldata.png', dpi=300, bbox_inches='tight')
 # plt.show()
 
-# savefig to file
+# Save figure to file
 folder_path = 'Multi-Objective Optimisation\Pareto_animation\\fulldata-s'
 
-# reconstruct the max_y that is a point (it's our response) at the 28th hour (final sampling time). TODO: take care of the max_y once I forget it.
+# Reconstruct the max_y that is a point (it's our response) at the 28th hour (final sampling time). TODO: take care of the max_y once I forget it.
 # max_y = 336.67          
 
 for i, pareto_front in enumerate(collect_pf.pareto_fronts):
@@ -498,12 +484,12 @@ for i, pareto_front in enumerate(collect_pf.pareto_fronts):
     max_point_mean = mean_values[max_index]
     max_point_std = std_values[max_index]
 
-    # 绘制通过累计浓度最高点的垂直虚线// Change to draw the highest cumulative of permeated in current dataset, from 'max_point_mean' to 'max_y'
+    # Draw a vertical dashed line at the highest cumulative concentration point // Change to draw the highest cumulative of permeated in current dataset, from 'max_point_mean' to 'max_y'
     plt.axvline(x=max_y, color='black', linestyle='--', label='The incumbent best', alpha=0.8)
 
-    # 添加累计浓度最高点的文本标签
+    # Add text label for the highest cumulative concentration point
     # plt.text(max_point_mean, max_point_std, f'({max_point_mean:.3f}, {max_point_std:.3f})',
-            #  color='black', verticalalignment='top')
+    #          color='black', verticalalignment='top')
     
     plt.title(f'Pareto Front at Iteration {i+1}')
     plt.xlabel('Prediction Mean')
@@ -511,19 +497,17 @@ for i, pareto_front in enumerate(collect_pf.pareto_fronts):
     plt.legend()
     # plt.grid(True)
     
-    # 构建文件完整路径
+    # Build the full file path
     file_name = f'Pareto_Iteration_{i+1}.png'
     file_path = os.path.join(folder_path, file_name)
     
-    # 保存图形到指定路径
+    # Save the figure to the specified path
     plt.savefig(file_path, dpi=300, bbox_inches='tight')
-    plt.close()  # 关闭图形以节省内存
-
+    plt.close()  # Close the figure to save memory
 # Plot the dynamic Pareto front over iterations using animation
 fig, ax = plt.subplots()
 scat = ax.scatter([], [], s=50, alpha=0.5)
 
-# 根据最大和最小的pareto front值来计算坐标轴范围
 xlim_min = -min([pf[:, 0].min() for pf in collect_pf.pareto_fronts])
 xlim_max = -max([pf[:, 0].max() for pf in collect_pf.pareto_fronts])
 ylim_min = -min([pf[:, 1].min() for pf in collect_pf.pareto_fronts])
@@ -534,7 +518,7 @@ ax.set_title('Pareto Fronts Over Iterations')
 ax.set_xlabel('Prediction Mean')
 ax.set_ylabel('Prediction Standard Deviation (Uncertainty)')
 
-# 初始化虚线和文本对象
+# Initialize dashed line and text objects
 vline = ax.axvline(x=xlim_min, color='black', linestyle='--', alpha=0.8)
 text = ax.text(xlim_min, ylim_min, '', fontsize=9, color='black', verticalalignment='top')
 
@@ -571,13 +555,13 @@ def update(frame):
 ani = FuncAnimation(fig, update, frames=len(collect_pf.pareto_fronts),
                     init_func=init, blit=False, repeat_delay=50000)
 
-# 显示动画
+
 plt.show()
 
-# 如果需要保存动画为文件
+# If you need to save the animation as a file
 ani.save("Multi-Objective Optimisation\Pareto_animation\\fulldata-s\pareto_animation_fulldata.gif", writer='imagemagick', fps=2)
 
-# 基于多目标优化结果进行决策
+# Make decisions based on multi-objective optimization results
 for i in range(len(res.X)):
     x = res.X[i]
     mean_pred, std_pred = res.F[i]
