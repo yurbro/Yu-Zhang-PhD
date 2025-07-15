@@ -33,7 +33,7 @@ from pymoo.core.callback import Callback
 class YuKernel(Kernel):
     def __init__(self, v0, wl, a0, a1, v1):
         self.v0 = v0
-        self.wl = np.atleast_1d(wl)  # 确保 wl 是数组
+        self.wl = np.atleast_1d(wl)  
         self.a0 = a0
         self.a1 = a1
         self.v1 = v1
@@ -45,10 +45,9 @@ class YuKernel(Kernel):
         X = np.atleast_2d(X)
         Y = np.atleast_2d(Y)
 
-        # 确保 self.wl 有正确的形状，例如：
         if self.wl.size != X.shape[-1]:
-            # 这里是错误处理或逻辑调整
-            # 例如，扩展或调整 self.wl 以匹配特征数量
+            # Here is the error handling or logic adjustment
+            # For example, expand or adjust self.wl to match the number of features
             raise ValueError("wl size must match the number of features")
 
         # Exponential term
@@ -82,33 +81,6 @@ class YuKernel(Kernel):
         return (f"YuKernel(v0={self.v0}, wl={self.wl}, a0={self.a0}, " 
                 f"a1={self.a1}, v1={self.v1})")
     
-# # Bayesian Optimization for GPR model with YuKernel kernel function and cross-validation for hyperparameter tuning 
-# def gpr_model_cv(v0, a0, a1, v1, wl1, wl2, wl3):
-#     # combine the three wavelengths into a single array
-#     wl = [wl1, wl2, wl3]
-#     # define the model
-#     gpr = GaussianProcessRegressor(kernel=YuKernel(v0, wl, a0, a1, v1), n_restarts_optimizer=10, alpha=1e-10)
-
-#     # fit the model on the training set
-#     gpr.fit(X_train_scaled, y_train_scaled)
-
-#     # predict the values in the test set
-#     y_pred = gpr.predict(X_test_scaled)
-
-#     # transform the predicted data to the original scale
-#     y_pred = scaler_y.inverse_transform(y_pred.reshape(-1, 1)).flatten()
-
-#     # ic(y_pred, y_test)
-
-#     # calculate the mean squared error
-#     mse_gpr = mean_squared_error(y_test, y_pred)
-#     rmse_gpr = np.sqrt(mse_gpr)
-#     r2_gpr = 1- (np.sum((y_test - y_pred)**2) / np.sum((y_test - np.mean(y_test))**2))
-#     print('---------------------------------------------------------------------')
-#     print(f'Validation MSE: {mse_gpr}, Validation RMSE: {rmse_gpr}, Validation R^2: {r2_gpr}')
-
-#     return -mse_gpr
-
 # define evaluation metrics
 def evaluate(y_test, y_pred_test):
     # Calculate Mean Squared Error (MSE)
@@ -377,93 +349,6 @@ def MultiObjectiveOptimisation(d, best_gpr, scaler_X, scaler_y, popsize, gen, ru
     get_mean = []
     get_std = []
 
-    # # Plotting
-    # plt.figure(figsize=(10, 6))
-    # for i, pareto_front in enumerate(collect_pf.pareto_fronts):
-    #     # TODO:Assume mean is the first position and std is the second
-    #     mean_values = -pareto_front[:, 0]  # Use negative because we minimized the negative mean
-    #     std_values = -pareto_front[:, 1]
-    #     plt.scatter(mean_values, std_values, label=f'Iteration {i+1}', alpha=0.7)
-
-    # plt.title('Pareto Fronts Over Iterations')
-    # plt.xlabel('Prediction Mean')
-    # plt.ylabel('Prediction Standard Deviation (Uncertainty)')
-    # plt.grid(True)
-
-    # # check if the directory exists, if not, create it
-    # directory_run_re = path_results
-    # if not os.path.exists(directory_run_re):
-    #     os.makedirs(directory_run_re)
-    # directory_run_results = os.path.join(directory_run_re, f'Pareto-{run_num}-{method}')
-    # if not os.path.exists(directory_run_results):
-    #     os.makedirs(directory_run_results)
-    # if savefig:
-    #     plt.savefig(os.path.join(directory_run_results, 'pareto_fronts_overview_fulldata.png'), dpi=300, bbox_inches='tight')  # TODO: code the if to choose save or not
-    # # plt.show()
-    # print(f"The Pareto fronts overview plot has been saved to {os.path.join(directory_run_results, 'pareto_fronts_overview_fulldata.png')}")
-
-    # for i, pareto_front in enumerate(collect_pf.pareto_fronts):
-    #     # plt.figure(figsize=(10, 8))
-    #     mean_values = -pareto_front[:, 0]
-    #     std_values = -pareto_front[:, 1]
-    #     plt.scatter(mean_values, std_values, c='red', edgecolors='k', alpha=0.7)
-    #     # ic(mean_values, std_values)
-
-    #     # Calculate the maximum cumulative concentration value in current pareto front iteration
-    #     cumulative_concentrations = np.add(-mean_values, std_values)
-    #     # ic(cumulative_concentrations)
-    #     max_index = np.argmax(cumulative_concentrations)
-    #     max_point_mean = mean_values[max_index]
-    #     max_point_std = std_values[max_index]
-
-    #     # 绘制通过累计浓度最高点的垂直虚线// Change to draw the highest cumulative of permeated in current dataset, from 'max_point_mean' to 'max_y'
-    #     plt.axvline(x=max_y, color='black', linestyle='--', label='The incumbent best', alpha=0.8)
-
-    #     # 添加累计浓度最高点的文本标签
-    #     # plt.text(max_point_mean, max_point_std, f'({max_point_mean:.3f}, {max_point_std:.3f})',
-    #             #  color='black', verticalalignment='top')
-        
-    #     plt.title(f'Pareto Front at Iteration {i+1}')
-    #     plt.xlabel('Prediction Mean')
-    #     plt.ylabel('Prediction Standard Deviation (Uncertainty)')
-    #     plt.legend()
-    #     # plt.grid(True)
-        
-    #     # 构建文件完整路径
-    #     file_name = f'Pareto_Iteration_{i+1}.png'
-    #     file_path = os.path.join(directory_run_results, file_name)
-        
-    #     # 保存图形到指定路径
-    #     if savefig:
-    #         plt.savefig(file_path, dpi=300, bbox_inches='tight')   
-    #     plt.close()  # 关闭图形以节省内存
-    # print(f"Pareto front plots saved to {directory_run_results}")
-
-    # # 基于多目标优化结果进行决策
-    # for i in range(len(res.X)):
-    #     x = res.X[i]
-    #     mean_pred, std_pred = res.F[i]
-    #     get_mean.append(-mean_pred)
-    #     get_std.append(-std_pred)
-
-    # get_mean = np.array(get_mean)
-    # get_std = np.array(get_std)
-
-    # # ic(get_mean, get_std)               # Pareto solution mean and std
-    # # Plot the pure mean&std with threshold of best concentration
-    # plt.errorbar(range(len(get_mean)), get_mean, yerr=get_std, fmt='o', ecolor='blue', capsize=3, color='red', marker='o', mfc='white', mec='red', mew=2)
-
-    # plt.axhline(y=max_y, color='grey', linestyle='--', label='The incumbent best')    # TODO: This line should be the highest line of current history dataset.
-    # # plt.text(0, max_point_Efficient_solution_cumulative_concentration, f'({max_point_mean:.3f}, {max_point_std:.3f})', color='black', verticalalignment='bottom')
-    # plt.xlabel('Pareto Points No.')
-    # plt.ylabel('Cumulative amount of ibu release (μg/cm²)')
-    # plt.legend()
-    # if savefig:
-    #     plt.savefig(os.path.join(directory_run_results, 'cumulative_concentration.png'), dpi=300, bbox_inches='tight')  
-    # # plt.show()
-    # print(f"The cumulative concentration plot has been saved to {os.path.join(directory_run_results, 'cumulative_concentration.png')}")
-
-# ------------------------------------------ Main Code ------------------------------------------
 
 if __name__ == "__main__":
     # # set the parameters

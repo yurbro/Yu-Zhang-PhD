@@ -21,19 +21,19 @@ def calculate_improvement(file_path_save, benchmark, method, iter):
         best_value = pd.read_excel(file_path_save, sheet_name='IncumbentBest')
         best_value = best_value['Inc_best'].values[i-1]
         # df_imp = (df_iter - best_value) / abs(best_value) * 100
-        
-        # 选择df_iter中最大的值
+
+        # Select the maximum value from df_iter
         df_iter_max = df_iter.max().values[0]
         # print(f"Best value for iteration {i}: {best_value}, Max value in df_iter: {df_iter_max}")
-        df_imp = df_iter_max - best_value  # 计算改进值
+        df_imp = df_iter_max - best_value  # calculate improvement
 
         # # average improvement calculation
-        # df_imp = df_iter.values - best_value  # 计算改进值
+        # df_imp = df_iter.values - best_value  # calculate improvement
         # df_imp = pd.DataFrame(df_imp, columns=[f'iter-{i}'])
 
 
         if df_imp < 0:
-            df_imp = 0  # 如果改进值小于0，则设置为0
+            df_imp = 0  # if the improvement is negative, set it to 0
 
         # print(f"Iteration {i} improvement: {df_imp}")
         avg_improvement = np.mean(df_imp)
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     path = "Multi-Objective Optimisation\Benchmark\Package Module-III-griewank\Dataset"
     # method = "RANDOM"  # or "PROPOSED", depending on the method
     iter = 30
-    dim = 5  # 维度
+    dim = 5  # Dimensions
     alpha = 0.5
     benchmark = "Ackley"  # or "Zakharov", depending on the benchmark function
     # file_path_save = f"Multi-Objective Optimisation\Benchmark\Package Module-III-griewank\Ave_Improve\\{method}_improvement_analysis_a-{alpha}.xlsx"

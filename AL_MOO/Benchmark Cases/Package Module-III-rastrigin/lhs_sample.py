@@ -8,23 +8,18 @@
 
 import numpy as np
 from ackley_func import ackley, ackley_max
-# from zakharov_func import zakharov_max
 
-# 1. 定义采样区间：三个维度都在 [-32.768, 32.768] 范围内
-# lb = np.array([-32.768, -32.768, -32.768])
-# ub = np.array([32.768, 32.768, 32.768])
-
-lb = np.array([-5, -5, -5])  # 下界
-ub = np.array([10, 10, 10])   # 上界
+lb = np.array([-5, -5, -5])  # lower bound
+ub = np.array([10, 10, 10])   # upper bound
 d  = 3
 
 def lhs_samples(n: int, lb: np.ndarray, ub: np.ndarray) -> np.ndarray:
-    """ 在每个维度范围 [lb[i], ub[i]] 上做 LHS 采样，返回 shape (n, d) """
-    rng = np.random.default_rng(seed=42)  # 设置随机种子以确保可重复性
+    """  Generate Latin Hypercube Sampling (LHS) points within the given bounds."""
+    rng = np.random.default_rng(seed=42)  # Set random seed for reproducibility
     d = len(lb)
     result = np.zeros((n, d))
     for j in range(d):
-        # 生成 n 个分区的随机点
+        # Generate random points in n partitions
         cut = np.linspace(0, 1, n + 1)
         u = rng.random(n)
         points = cut[:-1] + u * (cut[1:] - cut[:-1])
@@ -34,7 +29,7 @@ def lhs_samples(n: int, lb: np.ndarray, ub: np.ndarray) -> np.ndarray:
 
 
 if __name__ == "__main__":
-    n_init = 20         # 初始采样点数量 20
+    n_init = 20         # Initial number of sampling points
     X_init = lhs_samples(n_init, lb, ub)      # shape (20, 3)
     print(f"Initial LHS samples (shape {X_init.shape}):")
     print(X_init.round(3))

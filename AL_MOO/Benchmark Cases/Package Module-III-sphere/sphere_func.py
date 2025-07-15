@@ -13,11 +13,11 @@ import os
 
 def ackley(x: Union[np.ndarray, list]) -> np.ndarray:
     """
-    计算标准 Sphere 函数值（最小化目标）。
-    输入：
-        x: np.ndarray 或 list, 形状可以是 (d,) 或 (n,d)
-           每行表示一个 d 维向量 [x1, x2, ..., xd]。
-    返回：
+    Calculate standard Sphere function value (minimization objective).
+    Input:
+        x: np.ndarray or list, shape can be (d,) or (n,d)
+           Each row is a d-dimensional vector [x1, x2, ..., xd].
+    Returns:
         np.ndarray, shape (n,)
     Sphere(x) = sum_{i=1}^d x_i^2
     """
@@ -26,27 +26,27 @@ def ackley(x: Union[np.ndarray, list]) -> np.ndarray:
 
 def ackley_max(x: Union[np.ndarray, list]) -> np.ndarray:
     """
-    实际是计算 Zakharov 函数的最大值（最大化目标）。
-    输入：
-        x: np.ndarray 或 list, 形状可以是 (d,) 或 (n,d)
-           每行表示一个 d 维向量 [x1, x2, ..., xd]。
-    返回：
+    Actually calculates the maximum value of the Zakharov function (maximization objective).
+    Input:
+        x: np.ndarray or list, shape can be (d,) or (n,d)
+           Each row is a d-dimensional vector [x1, x2, ..., xd].
+    Returns:
         np.ndarray, shape (n,)
     """
-    return -ackley(x)  # 最大化目标，最小化目标的负值
+    return -ackley(x)  # Maximization objective, negative of minimization objective
 
 def read_pts_from_excel(dim, method, filepath, selected_sheetname):
     """
-    读取Excel文件中Top3_EI和Top3_HV两个sheet的X1,X2,X3列，合并为pts数组。
+    Read columns X1, X2, X3 from Top3_EI and Top3_HV sheets in Excel file and merge into pts array.
     """
-    # check the method
+    # Check the method
     cols = [f"X{i+1}" for i in range(dim)]
     if method not in [f'EI-{dim}D', f'HV-{dim}D', f'RANDOM-{dim}D']:
         sheets = selected_sheetname
         pts_list = []
         for sheet in sheets:
             df = pd.read_excel(filepath, sheet_name=sheet)
-            # 取和dim维度一样的X列
+            # Select X columns matching the dimension
             pts_sheet = df[cols].to_numpy(dtype=float)
             pts_list.append(pts_sheet)
         pts = np.vstack(pts_list)
@@ -72,19 +72,19 @@ def read_pts_from_excel(dim, method, filepath, selected_sheetname):
 
 def read_pts_separate_from_excel(dim, method, filepath, selected_sheetname):
     """
-    分别读取Excel文件中Top3_EI和Top3_HV两个sheet的X1,X2,X3列，分别返回两个数组。
-    返回:
-        pts_ei: np.ndarray, Top3_EI sheet的点
-        pts_hv: np.ndarray, Top3_HV sheet的点
+    Separately read columns X1, X2, X3 from Top3_EI and Top3_HV sheets in Excel file and return two arrays.
+    Returns:
+        pts_ei: np.ndarray, points from Top3_EI sheet
+        pts_hv: np.ndarray, points from Top3_HV sheet
     """
-    # check the method
+    # Check the method
     cols = [f"X{i+1}" for i in range(dim)]
     if method not in [f'EI-{dim}D', f'HV-{dim}D', f'RANDOM-{dim}D']:
         sheetname_ei = selected_sheetname[0]
         sheetname_hv = selected_sheetname[1]
         df_ei = pd.read_excel(filepath, sheet_name=sheetname_ei)
         df_hv = pd.read_excel(filepath, sheet_name=sheetname_hv)
-        # 取和dim维度一样的X列
+        # Select X columns matching the dimension
         pts_ei = df_ei[cols].to_numpy(dtype=float)
         pts_hv = df_hv[cols].to_numpy(dtype=float)
         return pts_ei, pts_hv
@@ -110,12 +110,12 @@ def read_pts_separate_from_excel(dim, method, filepath, selected_sheetname):
 
 def run_ackley(dim, run_num, path, path_data_run, output_path, method, selected_sheetname):
     """
-    运行Ackley函数计算并保存结果。
-    输入：
-        dim: int, 维度
-        run_num: int, 运行编号
+    Run Ackley function calculation and save results.
+    Input:
+        dim: int, dimension
+        run_num: int, run number
     """
-    # 动态生成列名
+    # Dynamically generate column names
     col_names = [f'x{i+1}' for i in range(dim)]
 
     # Check the method

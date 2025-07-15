@@ -110,17 +110,17 @@ def run_moo_loop(path, path_data, path_df, d, lb, ub,
     print(f"The calculation of the Ackley function for the selected points is completed and save to the lhs_samples_ackley.xlsx.")
 
     # 7.2 Restructure the sheet contents
-    # 拼接 RUN-{run_num-1}-{method} 和 RUN-{run_num}-{method} 的内容，并写回 RUN-{run_num}-{method} sheet
+    # Check if the previous run number exists
 
     sheet_prev = f'RUN-{run_num-1}-{method}'
     sheet_curr = f'RUN-{run_num}-{method}'
 
     with pd.ExcelFile(file_path_optimisation) as xls:
-        # 读取两个 sheet
+        # read the previous and current sheets
         if sheet_prev in xls.sheet_names and sheet_curr in xls.sheet_names:
             df_prev = pd.read_excel(xls, sheet_name=sheet_prev)
             df_curr = pd.read_excel(xls, sheet_name=sheet_curr)
-            # 按照d的维度来列顺序拼接
+            # based on the dimension, select the columns and concatenate them
             cols = [f"x{i+1}" for i in range(d)] + ["Ackley"]
             df_prev = df_prev[cols]
             df_curr = df_curr[cols]

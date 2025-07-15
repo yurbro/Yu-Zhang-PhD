@@ -9,26 +9,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def set_plot_style(dim, alpha_columns_5d, iterations_5d, path, df_5d, alpha_cols_5d, special_cols_5d, benchmark='Zakharov'):
-    # 画图
-    # plt.figure(figsize=(12, 6))
-    # for col in alpha_columns_5d:
-    #     plt.plot(iterations_5d, df_5d[col], label=col)
-    # # Plot settings
-    # plt.xlabel('Iteration')
-    # plt.ylabel(f'Ackley Best Value ({dim}D)')
-    # plt.title(f'Performance across different Alpha values ({dim}D)')
-    # plt.legend(loc='best', fontsize='small', ncol=2)
-    # # plt.grid(True)
-    # plt.xticks(range(0, len(iterations_5d) + 1))
-    # plt.savefig(path + f'\\alpha_performance_{dim}D.png', dpi=300, bbox_inches='tight')
-    # plt.show()
-
-    # 画图
+    
     plt.figure(figsize=(14, 7))
-    # 画 Alpha 系列（统一样式）
+    #   Plot the alpha columns
     for col in alpha_cols_5d:
         plt.plot(iterations_5d, df_5d[col], label=col, linestyle='-', linewidth=1, alpha=0.8)
-    # 画特殊策略，使用不同的线型和颜色
+    # Plot special strategies with different line styles and colors
     special_styles_5d = {
         'BO_EI': {'linestyle': '--', 'color': 'red', 'linewidth': 2},
         'BO_UCB': {'linestyle': '-.', 'color': 'blue', 'linewidth': 2},
@@ -37,7 +23,7 @@ def set_plot_style(dim, alpha_columns_5d, iterations_5d, path, df_5d, alpha_cols
     for col in special_cols_5d:
         if col in df_5d.columns:
             plt.plot(iterations_5d, df_5d[col], label=col, **special_styles_5d[col])
-    # 图形设置
+    # Plot settings
     plt.xlabel('Iteration', fontsize=14)
     # plt.xticks(fontsize=10)
     plt.ylabel(f'{benchmark} Best Value', fontsize=14)
@@ -49,22 +35,22 @@ def set_plot_style(dim, alpha_columns_5d, iterations_5d, path, df_5d, alpha_cols
 
 if __name__ == "__main__":
 
-    # 读取数据文件
+    # Read data file
     path = 'Multi-Objective Optimisation\\Benchmark\\Package Module-IIII\\BO-RE'
     # Test PROPOSED-xD
-    dim = 3  # 维度
-    filename = 'single_bo_results_Zakharov.xlsx'  # 修改为你的文件名
-    sheetname = f'Alpha-Comparison-{dim}D'  # 修改为你的工作表名称
-    df_5d = pd.read_excel(path + '/' + filename, sheet_name=sheetname)  # 修改为你的文件路径
-    # 提取 iteration 和所有 alpha 列
+    dim = 3  # Dimension
+    filename = 'single_bo_results_Zakharov.xlsx'  # Change to your filename
+    sheetname = f'Alpha-Comparison-{dim}D'  # Change to your sheet name
+    df_5d = pd.read_excel(path + '/' + filename, sheet_name=sheetname)  # Change to your file path
+    # Extract iteration and all alpha columns
     iterations_5d = df_5d['Iteration']
     alpha_columns_5d = [col for col in df_5d.columns if col.startswith('Proposed')]
     # Plot the comparison of EI, HV, and Random for 5D
-    sheetname_2_5d = f'Alpha-Comparison-{dim}D'  # 修改为你的工作表名称
-    df_5d = pd.read_excel(path + '/' + filename, sheet_name=sheetname_2_5d)  # 修改为你的文件路径
-    # 定义列分组
+    sheetname_2_5d = f'Alpha-Comparison-{dim}D'  # Change to your sheet name
+    df_5d = pd.read_excel(path + '/' + filename, sheet_name=sheetname_2_5d)  # Change to your file path
+    # Define column groups
     alpha_cols_5d = [col for col in df_5d.columns if col.startswith('Proposed')]
     special_cols_5d = ['BO_EI', 'BO_UCB', 'BO_POI']
 
-    # 调用函数绘图
+    # Call the function to plot
     set_plot_style(dim, alpha_columns_5d, iterations_5d, path, df_5d, alpha_cols_5d, special_cols_5d, benchmark='Zakharov')
