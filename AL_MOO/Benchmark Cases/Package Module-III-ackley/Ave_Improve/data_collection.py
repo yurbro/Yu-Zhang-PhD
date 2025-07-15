@@ -23,7 +23,7 @@ def load_data(file_path, benchmark):
     for sheet in sheet_names:
         print(f"Loading data from sheet: {sheet}")
         df = pd.read_excel(file_path, sheet_name=sheet)
-        # 取benchmark列的值
+        # 
         df_list.append(df[benchmark].values)
 
     return df_list
@@ -39,10 +39,9 @@ def run_loop(iter, benchmark, method, dim, file_path_save, path):
         data = np.concatenate(data).reshape(-1, 1)
         df = pd.DataFrame(data, columns=[f"iter-{i}"])
         all_dfs.append(df)
-
-    # 合并所有df到同一个DataFrame，不同列为不同迭代
+    # Concatenate all DataFrames along the columns
     result_df = pd.concat(all_dfs, axis=1)
-    # 保存到同一个sheet
+    # Calculate the average improvement
     with pd.ExcelWriter(file_path_save, engine='openpyxl', mode='w') as writer:
         result_df.to_excel(writer, sheet_name=method, index=False)
     print(f"All iterations saved to {file_path_save} in sheet '{method}'.")
@@ -53,7 +52,7 @@ if __name__ == "__main__":
     path = "Multi-Objective Optimisation\Benchmark\Package Module-III-ackley\Dataset"
     method = "RANDOM"  # or "PROPOSED", depending on the method
     iter = 30
-    dim = 5  # 维度
+    dim = 5  # dimension of the problem, can be 2, 5, or 10
     alpha = 0.5
     benchmark = "Ackley"  # or "Zakharov", depending on the benchmark function
     file_path_save = f"Multi-Objective Optimisation\Benchmark\Package Module-III-ackley\Ave_Improve\\{method}_improvement_analysis_a-{alpha}-{dim}D.xlsx"

@@ -82,17 +82,11 @@ def plot_ei_and_hv(ei_vals, hv_vals, path, savefig):
     # plt.show()
 
 def save_top_candidates(dim, pareto_front, ei_vals, df, path_data, run_num, method, total, k):
-    """
-    保存候选点到Excel，根据method选择不同的策略:
-    - method='EI': 只保存EI最大的total个点
-    - method='HV': 只保存HV贡献最大的total个点
-    - method='Random': 随机选择total个点
-    - method='Hybrid'（默认）: 保存EI最大的k个点和HV贡献最大的(total-k)个点
-    """
+
     save_path = f'{path_data}\\Top-RUN{run_num}-{method}.xlsx'
 
     if method == f'EI-{dim}D':
-        # 只用EI，保存EI最大的total个点
+        
         if np.all(ei_vals <= 0):
             print(f"All EI values are non-positive. Selecting top {total} candidates by Mean instead.")
             top_idx = np.argsort(pareto_front['Mean'].values)[-total:][::-1]
@@ -103,7 +97,7 @@ def save_top_candidates(dim, pareto_front, ei_vals, df, path_data, run_num, meth
         top_ei = top_ei.copy()
         top_ei['EI'] = ei_vals[top_idx]
         top_ei.insert(0, 'Num', top_idx + 1)
-        # 自动根据输入的维度确定X的个数
+        
         first_x = top_ei['X'].iloc[0]
         x_dim = len(parse_x(first_x))
         x_col_names = [f'X{i+1}' for i in range(x_dim)]
@@ -116,11 +110,11 @@ def save_top_candidates(dim, pareto_front, ei_vals, df, path_data, run_num, meth
         return save_path, sheetname_ei
 
     elif method == f'HV-{dim}D':
-        # 只用HV，保存HV贡献最大的total个点
+        # only Hypervolume Contribution
         top_hv = df.sort_values("HV_Contribution", ascending=False).head(total)
         top_hv = top_hv[['Num', 'X', 'Mean', 'Std', 'HV_Contribution']]
 
-        # 自动根据输入的维度确定X的个数
+        # automatically determine the number of X based on the input dimension
         first_x = top_hv['X'].iloc[0]
         x_dim = len(parse_x(first_x))
         x_col_names = [f'X{i+1}' for i in range(x_dim)]
@@ -133,16 +127,16 @@ def save_top_candidates(dim, pareto_front, ei_vals, df, path_data, run_num, meth
         return save_path, sheetname_hv
 
     elif method == f'RANDOM-{dim}D':
-        # 随机选择total个点
+        # randomly select total points
         # np.random.seed(5)  # 3D
         np.random.seed(9)  # 5D
-        total = min(total, len(pareto_front))  # 确保不超过pareto_front的长度
+        total = min(total, len(pareto_front))  # ensure not to exceed the length of pareto_front
         idx = np.random.choice(len(pareto_front), size=total, replace=False)
         top_rand = pareto_front.iloc[idx][['X', 'Mean', 'Std']]
         top_rand = top_rand.copy()
         top_rand['EI'] = ei_vals[idx]
         top_rand.insert(0, 'Num', idx + 1)
-        # 自动根据输入的维度确定X的个数
+        # automatically determine the number of X based on the input dimension
         first_x = top_rand['X'].iloc[0]
         x_dim = len(parse_x(first_x))
         x_col_names = [f'X{i+1}' for i in range(x_dim)]
@@ -155,7 +149,7 @@ def save_top_candidates(dim, pareto_front, ei_vals, df, path_data, run_num, meth
         return save_path, sheetname_random
 
     else:
-        # 默认Hybrid: EI最大的k个点 + HV最大的(total-k)个点
+        # default case: combine EI and HV
         k_EI = k
         k_HV = total - k
 
@@ -170,7 +164,7 @@ def save_top_candidates(dim, pareto_front, ei_vals, df, path_data, run_num, meth
         top_ei = top_ei.copy()
         top_ei['EI'] = ei_vals[top_ei_idx]
         top_ei.insert(0, 'Num', top_ei_idx + 1)
-        # 自动根据输入的维度确定X的个数
+        # automatically determine the number of X based on the input dimension
         first_x = top_ei['X'].iloc[0]
         x_dim = len(parse_x(first_x))
         x_col_names = [f'X{i+1}' for i in range(x_dim)]
@@ -179,7 +173,7 @@ def save_top_candidates(dim, pareto_front, ei_vals, df, path_data, run_num, meth
 
         top_hv = df.sort_values("HV_Contribution", ascending=False).head(k_HV)
         top_hv = top_hv[['Num', 'X', 'Mean', 'Std', 'HV_Contribution']]
-        # 自动根据输入的维度确定X的个数
+        # automatically determine the number of X based on the input dimension
         first_x = top_hv['X'].iloc[0]
         x_dim = len(parse_x(first_x))
         x_col_names = [f'X{i+1}' for i in range(x_dim)]
@@ -223,12 +217,12 @@ def run_acquisition_function(dim, run_num, path_af, path_data, path_data_run, me
     excel_path = f"{path_data}\\RUN-{run_num}-{method}\\pareto_front.xlsx"
     df = pd.read_excel(excel_path, sheet_name="Sheet1")      # Choose the correct epoch num. R-Epoch-1, R-Epoch-1-2, R-Epoch-2-2, R-Epoch-3
 
-    # 强制转换为float，并去除NaN行
+    # force convert to float and drop NaN rows
     df["Mean"] = pd.to_numeric(df["Mean"], errors="coerce")
     df["Std"] = pd.to_numeric(df["Std"], errors="coerce")
     df = df.dropna(subset=["Mean", "Std"])
 
-    df["Num"] = df.index + 1  # 添加一个序号列
+    df["Num"] = df.index + 1  # add a serial number column
 
     ref_point = (df["Mean"].min() - 1.0, df["Std"].min() - 1.0)
     points = df[["Mean", "Std"]].values
@@ -240,7 +234,7 @@ def run_acquisition_function(dim, run_num, path_af, path_data, path_data_run, me
     plot_hv_contrib(df['Num'].values, df["HV_Contribution"].values, path_af, savefig)
     plot_ei_and_hv(ei_vals, df["HV_Contribution"].values, path_af, savefig)
 
-    # 根据分配结果，来保存EI和HV, {这是我们提出的Adaptive acquisition function的方法}
+    # based on the method, save the top candidates
     savepath, sheetname = save_top_candidates(dim, pareto_front, ei_vals, df, path_data_run, run_num, method, total, k)
 
     return savepath, sheetname

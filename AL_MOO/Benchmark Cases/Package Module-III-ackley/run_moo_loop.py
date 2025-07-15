@@ -286,7 +286,7 @@ if __name__ == "__main__":
 
         print(f"--- End of Iteration {i+1}/{iteration} ---\n")
     
-    # 如果y_current_best结果为0，则终止循环
+    # Check if the best Ackley value is 0, if so, terminate the loop
     if y_current_best == 0:
         print("The best Ackley value is 0, terminating the loop.")
         print("No further iterations will be performed.")

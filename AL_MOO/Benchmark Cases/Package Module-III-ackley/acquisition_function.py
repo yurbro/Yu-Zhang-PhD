@@ -141,7 +141,7 @@ def save_top_candidates(dim, pareto_front, ei_vals, df, path_data, run_num, meth
         top_rand = top_rand.copy()
         top_rand['EI'] = ei_vals[idx]
         top_rand.insert(0, 'Num', idx + 1)
-        # 自动根据输入的维度确定X的个数
+        # Automatically determine the number of X variables based on input dimension
         first_x = top_rand['X'].iloc[0]
         x_dim = len(parse_x(first_x))
         x_col_names = [f'X{i+1}' for i in range(x_dim)]
@@ -154,7 +154,7 @@ def save_top_candidates(dim, pareto_front, ei_vals, df, path_data, run_num, meth
         return save_path, sheetname_random
 
     else:
-        # 默认Hybrid: EI最大的k个点 + HV最大的(total-k)个点
+        # Default Hybrid: top k points by EI + top (total-k) points by HV
         k_EI = k
         k_HV = total - k
 
@@ -169,7 +169,7 @@ def save_top_candidates(dim, pareto_front, ei_vals, df, path_data, run_num, meth
         top_ei = top_ei.copy()
         top_ei['EI'] = ei_vals[top_ei_idx]
         top_ei.insert(0, 'Num', top_ei_idx + 1)
-        # 自动根据输入的维度确定X的个数
+        # Automatically determine the number of X variables based on input dimension
         first_x = top_ei['X'].iloc[0]
         x_dim = len(parse_x(first_x))
         x_col_names = [f'X{i+1}' for i in range(x_dim)]
@@ -178,7 +178,7 @@ def save_top_candidates(dim, pareto_front, ei_vals, df, path_data, run_num, meth
 
         top_hv = df.sort_values("HV_Contribution", ascending=False).head(k_HV)
         top_hv = top_hv[['Num', 'X', 'Mean', 'Std', 'HV_Contribution']]
-        # 自动根据输入的维度确定X的个数
+        # Automatically determine the number of X variables based on input dimension
         first_x = top_hv['X'].iloc[0]
         x_dim = len(parse_x(first_x))
         x_col_names = [f'X{i+1}' for i in range(x_dim)]
@@ -222,12 +222,11 @@ def run_acquisition_function(dim, run_num, path_af, path_data, path_data_run, me
     excel_path = f"{path_data}\\RUN-{run_num}-{method}\\pareto_front.xlsx"
     df = pd.read_excel(excel_path, sheet_name="Sheet1")      # Choose the correct epoch num. R-Epoch-1, R-Epoch-1-2, R-Epoch-2-2, R-Epoch-3
 
-    # 强制转换为float，并去除NaN行
     df["Mean"] = pd.to_numeric(df["Mean"], errors="coerce")
     df["Std"] = pd.to_numeric(df["Std"], errors="coerce")
     df = df.dropna(subset=["Mean", "Std"])
 
-    df["Num"] = df.index + 1  # 添加一个序号列
+    df["Num"] = df.index + 1  # Add a column for point numbers
 
     ref_point = (df["Mean"].min() - 1.0, df["Std"].min() - 1.0)
     points = df[["Mean", "Std"]].values
@@ -239,7 +238,7 @@ def run_acquisition_function(dim, run_num, path_af, path_data, path_data_run, me
     plot_hv_contrib(df['Num'].values, df["HV_Contribution"].values, path_af, savefig)
     plot_ei_and_hv(ei_vals, df["HV_Contribution"].values, path_af, savefig)
 
-    # 根据分配结果，来保存EI和HV, {这是我们提出的Adaptive acquisition function的方法}
+    # Save top candidates based on EI and HV contributions
     savepath, sheetname = save_top_candidates(dim, pareto_front, ei_vals, df, path_data_run, run_num, method, total, k)
 
     return savepath, sheetname

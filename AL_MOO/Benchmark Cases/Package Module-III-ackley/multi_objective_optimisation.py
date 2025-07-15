@@ -33,7 +33,7 @@ from pymoo.core.callback import Callback
 class YuKernel(Kernel):
     def __init__(self, v0, wl, a0, a1, v1):
         self.v0 = v0
-        self.wl = np.atleast_1d(wl)  # 确保 wl 是数组
+        self.wl = np.atleast_1d(wl)  # Ensure wl is an array
         self.a0 = a0
         self.a1 = a1
         self.v1 = v1
@@ -45,10 +45,10 @@ class YuKernel(Kernel):
         X = np.atleast_2d(X)
         Y = np.atleast_2d(Y)
 
-        # 确保 self.wl 有正确的形状，例如：
+        # Ensure self.wl has the correct shape, e.g.:
         if self.wl.size != X.shape[-1]:
-            # 这里是错误处理或逻辑调整
-            # 例如，扩展或调整 self.wl 以匹配特征数量
+            # Error handling or logic adjustment
+            # For example, expand or adjust self.wl to match the number of features
             raise ValueError("wl size must match the number of features")
 
         # Exponential term
@@ -82,32 +82,6 @@ class YuKernel(Kernel):
         return (f"YuKernel(v0={self.v0}, wl={self.wl}, a0={self.a0}, " 
                 f"a1={self.a1}, v1={self.v1})")
     
-# # Bayesian Optimization for GPR model with YuKernel kernel function and cross-validation for hyperparameter tuning 
-# def gpr_model_cv(v0, a0, a1, v1, wl1, wl2, wl3):
-#     # combine the three wavelengths into a single array
-#     wl = [wl1, wl2, wl3]
-#     # define the model
-#     gpr = GaussianProcessRegressor(kernel=YuKernel(v0, wl, a0, a1, v1), n_restarts_optimizer=10, alpha=1e-10)
-
-#     # fit the model on the training set
-#     gpr.fit(X_train_scaled, y_train_scaled)
-
-#     # predict the values in the test set
-#     y_pred = gpr.predict(X_test_scaled)
-
-#     # transform the predicted data to the original scale
-#     y_pred = scaler_y.inverse_transform(y_pred.reshape(-1, 1)).flatten()
-
-#     # ic(y_pred, y_test)
-
-#     # calculate the mean squared error
-#     mse_gpr = mean_squared_error(y_test, y_pred)
-#     rmse_gpr = np.sqrt(mse_gpr)
-#     r2_gpr = 1- (np.sum((y_test - y_pred)**2) / np.sum((y_test - np.mean(y_test))**2))
-#     print('---------------------------------------------------------------------')
-#     print(f'Validation MSE: {mse_gpr}, Validation RMSE: {rmse_gpr}, Validation R^2: {r2_gpr}')
-
-#     return -mse_gpr
 
 # define evaluation metrics
 def evaluate(y_test, y_pred_test):
@@ -216,14 +190,14 @@ class MyProblem(ElementwiseProblem):
 
     def _evaluate(self, x, out, *args, **kwargs):
         # x_scaled = self.scaler_X.transform([x])
-        y_pred, y_std = self.best_gpr.predict([x], return_std=True)     # 这里的输出y_std就是标准差了
+        y_pred, y_std = self.best_gpr.predict([x], return_std=True)     # The output y_std here is the standard deviation
         # ic(x, y_pred)
 
         y_pred_original = self.scaler_y.inverse_transform(y_pred.reshape(-1, 1)).flatten()
         # y_std_original = y_std * self.scaler_y.scale_
 
         y_std_original = y_std[0]   
-        y_pred_original = y_pred_original.squeeze()  # 去掉维度为1的维度
+        y_pred_original = y_pred_original.squeeze()  # Remove dimensions of size 1
 
         # Just use the final sampling data as the target data
         mean_pred = y_pred_original
@@ -240,7 +214,7 @@ class CollectParetoFronts(Callback):
 
     def notify(self, algorithm):
         pareto_front = algorithm.pop.get("F")
-        # print(f'Pareto front shape: {pareto_front.shape}')  # 打印形状以检查
+        # print(f'Pareto front shape: {pareto_front.shape}')  # Print shape to check
         self.pareto_fronts.append(pareto_front)
 
 def train_gpr_model(X_df, y_df, lower_bound, upper_bound, run_num, method_type, path_data):
@@ -363,11 +337,11 @@ def MultiObjectiveOptimisation(d, best_gpr, scaler_X, scaler_y, popsize, gen, ru
     for i in range(len(res.X)):
         print(f"Solution-[{i}]: X = {np.round(res.X[i], 3)}, F = {np.round(res.F[i], 3)}, X_original= {np.round(scaler_X.inverse_transform([res.X[i]]), 3)}")
 
-    # Save the Pareto front and the corresponding variables to a xlxs file
+    # Save the Pareto front and the corresponding variables to an xlsx file
     pareto_front_df = pd.DataFrame(-res.F, columns=['Mean', 'Std'])
     pareto_front_df['X'] = [scaler_X.inverse_transform([x]) for x in res.X]
 
-    # Check the directory exists, if not, create it
+    # Check if the directory exists, if not, create it
     directory_run = f"{path_data}\RUN-{run_num}-{method}"
     if not os.path.exists(directory_run):
         os.makedirs(directory_run)
@@ -380,7 +354,7 @@ def MultiObjectiveOptimisation(d, best_gpr, scaler_X, scaler_y, popsize, gen, ru
     # Plotting
     plt.figure(figsize=(10, 6))
     for i, pareto_front in enumerate(collect_pf.pareto_fronts):
-        # TODO:Assume mean is the first position and std is the second
+        # TODO: Assume mean is the first position and std is the second
         mean_values = -pareto_front[:, 0]  # Use negative because we minimized the negative mean
         std_values = -pareto_front[:, 1]
         plt.scatter(mean_values, std_values, label=f'Iteration {i+1}', alpha=0.7)
@@ -390,7 +364,7 @@ def MultiObjectiveOptimisation(d, best_gpr, scaler_X, scaler_y, popsize, gen, ru
     plt.ylabel('Prediction Standard Deviation (Uncertainty)')
     plt.grid(True)
 
-    # check if the directory exists, if not, create it
+    # Check if the directory exists, if not, create it
     directory_run_re = path_results
     if not os.path.exists(directory_run_re):
         os.makedirs(directory_run_re)
@@ -416,10 +390,10 @@ def MultiObjectiveOptimisation(d, best_gpr, scaler_X, scaler_y, popsize, gen, ru
         max_point_mean = mean_values[max_index]
         max_point_std = std_values[max_index]
 
-        # 绘制通过累计浓度最高点的垂直虚线// Change to draw the highest cumulative of permeated in current dataset, from 'max_point_mean' to 'max_y'
+        # Draw a vertical dashed line through the point with the highest cumulative concentration // Change to draw the highest cumulative of permeated in current dataset, from 'max_point_mean' to 'max_y'
         plt.axvline(x=max_y, color='black', linestyle='--', label='The incumbent best', alpha=0.8)
 
-        # 添加累计浓度最高点的文本标签
+        # Add text label for the point with the highest cumulative concentration
         # plt.text(max_point_mean, max_point_std, f'({max_point_mean:.3f}, {max_point_std:.3f})',
                 #  color='black', verticalalignment='top')
         
@@ -429,17 +403,17 @@ def MultiObjectiveOptimisation(d, best_gpr, scaler_X, scaler_y, popsize, gen, ru
         plt.legend()
         # plt.grid(True)
         
-        # 构建文件完整路径
+        # Build the full file path
         file_name = f'Pareto_Iteration_{i+1}.png'
         file_path = os.path.join(directory_run_results, file_name)
         
-        # 保存图形到指定路径
+        # Save the figure to the specified path
         if savefig:
             plt.savefig(file_path, dpi=300, bbox_inches='tight')   
-        plt.close()  # 关闭图形以节省内存
+        plt.close()  # Close the figure to save memory
     print(f"Pareto front plots saved to {directory_run_results}")
 
-    # 基于多目标优化结果进行决策
+    # Make decisions based on multi-objective optimization results
     for i in range(len(res.X)):
         x = res.X[i]
         mean_pred, std_pred = res.F[i]
@@ -450,7 +424,7 @@ def MultiObjectiveOptimisation(d, best_gpr, scaler_X, scaler_y, popsize, gen, ru
     get_std = np.array(get_std)
 
     # ic(get_mean, get_std)               # Pareto solution mean and std
-    # Plot the pure mean&std with threshold of best concentration
+    # Plot the pure mean & std with threshold of best concentration
     plt.errorbar(range(len(get_mean)), get_mean, yerr=get_std, fmt='o', ecolor='blue', capsize=3, color='red', marker='o', mfc='white', mec='red', mew=2)
 
     plt.axhline(y=max_y, color='grey', linestyle='--', label='The incumbent best')    # TODO: This line should be the highest line of current history dataset.
