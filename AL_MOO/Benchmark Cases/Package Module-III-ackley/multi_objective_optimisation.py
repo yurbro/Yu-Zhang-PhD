@@ -1,0 +1,503 @@
+#!/usr/bin/python
+# -*- encoding: utf-8 -*-
+# File    :   ack_GPR_MOO-RUN2-PROPOSED.py
+# Time    :   2025/06/04 11:03:03
+# Author  :   Y.ZHANG (UniOfSurrey)
+# Email   :   yu.zhang@surrey.ac.uk
+
+
+import numpy as np
+import os
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import Kernel
+from sklearn.model_selection import train_test_split, LeaveOneOut
+from sklearn.metrics import mean_squared_error, mean_absolute_error, explained_variance_score
+from scipy.stats import ks_2samp
+from scipy.spatial.distance import jensenshannon
+from bayes_opt import BayesianOptimization
+from bayes_opt.util import UtilityFunction
+from sklearn.preprocessing import StandardScaler
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+from tabulate import tabulate
+from datetime import timedelta
+from time import time
+from icecream import ic
+from pymoo.algorithms.moo.nsga2 import NSGA2
+from pymoo.optimize import minimize
+from pymoo.core.problem import ElementwiseProblem
+from pymoo.core.callback import Callback
+
+
+class YuKernel(Kernel):
+    def __init__(self, v0, wl, a0, a1, v1):
+        self.v0 = v0
+        self.wl = np.atleast_1d(wl)  # 确保 wl 是数组
+        self.a0 = a0
+        self.a1 = a1
+        self.v1 = v1
+    
+    def __call__(self, X, Y=None):
+        if Y is None:
+            Y = X
+
+        X = np.atleast_2d(X)
+        Y = np.atleast_2d(Y)
+
+        # 确保 self.wl 有正确的形状，例如：
+        if self.wl.size != X.shape[-1]:
+            # 这里是错误处理或逻辑调整
+            # 例如，扩展或调整 self.wl 以匹配特征数量
+            raise ValueError("wl size must match the number of features")
+
+        # Exponential term
+        exp_term = np.sum(((X[:, np.newaxis, :] - Y[np.newaxis, :, :])**2) / self.wl, axis=2)
+        exp_term = self.v0 * np.exp(-0.5 * exp_term)
+
+        # Linear term
+        linear_term = self.a0 + self.a1 * np.dot(X, Y.T)
+
+        # Noise term
+        if X is Y:
+            noise_term = self.v1 * np.eye(X.shape[0])
+        else:
+            noise_term = np.zeros((X.shape[0], Y.shape[0]))
+
+        return exp_term + linear_term + noise_term
+
+    def diag(self, X):
+        """
+        Return the diagonal of the kernel matrix.
+        """
+        return np.array([self.v0 + self.a0 + self.a1 * np.sum(X**2, axis=1) + self.v1] * X.shape[0])
+
+    def is_stationary(self):
+        """
+        Returns whether the kernel is stationary.
+        """
+        return False
+    
+    def __repr__(self):
+        return (f"YuKernel(v0={self.v0}, wl={self.wl}, a0={self.a0}, " 
+                f"a1={self.a1}, v1={self.v1})")
+    
+# # Bayesian Optimization for GPR model with YuKernel kernel function and cross-validation for hyperparameter tuning 
+# def gpr_model_cv(v0, a0, a1, v1, wl1, wl2, wl3):
+#     # combine the three wavelengths into a single array
+#     wl = [wl1, wl2, wl3]
+#     # define the model
+#     gpr = GaussianProcessRegressor(kernel=YuKernel(v0, wl, a0, a1, v1), n_restarts_optimizer=10, alpha=1e-10)
+
+#     # fit the model on the training set
+#     gpr.fit(X_train_scaled, y_train_scaled)
+
+#     # predict the values in the test set
+#     y_pred = gpr.predict(X_test_scaled)
+
+#     # transform the predicted data to the original scale
+#     y_pred = scaler_y.inverse_transform(y_pred.reshape(-1, 1)).flatten()
+
+#     # ic(y_pred, y_test)
+
+#     # calculate the mean squared error
+#     mse_gpr = mean_squared_error(y_test, y_pred)
+#     rmse_gpr = np.sqrt(mse_gpr)
+#     r2_gpr = 1- (np.sum((y_test - y_pred)**2) / np.sum((y_test - np.mean(y_test))**2))
+#     print('---------------------------------------------------------------------')
+#     print(f'Validation MSE: {mse_gpr}, Validation RMSE: {rmse_gpr}, Validation R^2: {r2_gpr}')
+
+#     return -mse_gpr
+
+# define evaluation metrics
+def evaluate(y_test, y_pred_test):
+    # Calculate Mean Squared Error (MSE)
+    mse = mean_squared_error(y_test, y_pred_test)
+    # Calculate Root Mean Squared Error (RMSE)
+    rmse = np.sqrt(mse)
+    # Calculate R-squared (R^2)
+    r_squared = 1 - (np.sum((y_test - y_pred_test)**2) / np.sum((y_test - np.mean(y_test))**2))   # 1 - SSE/SST
+    # r_squared = r2_score(y_test, y_pred_test)
+
+    # Calculate Mean Absolute Error (MAE)
+    mae = mean_absolute_error(y_test, y_pred_test)
+    # Calculate Explained Variance Score
+    evs = explained_variance_score(y_test, y_pred_test)
+    # Calculate MAPE
+    mape = np.mean(np.abs((y_test - y_pred_test) / y_test)) * 100
+
+    return mse, rmse, r_squared, mae, evs, mape
+
+# ---------------------- Leave-One-Out CV Function ----------------------
+def gpr_loocv_cv(v0, a0, a1, v1, X, y, **kwargs):
+    """
+    Perform LOOCV for Gaussian Process Regression with YuKernel.
+    Returns the negative average MSE across all folds (to maximize in BayesianOptimization).
+    """
+    wl = [kwargs[f'wl{i+1}'] for i in range(len(kwargs)) if f'wl{i+1}' in kwargs]
+    loo = LeaveOneOut()
+    mse_list = []
+
+    # iterate over each left-out sample
+    for train_idx, test_idx in loo.split(X):
+        X_train, X_test = X[train_idx], X[test_idx]
+        y_train, y_test = y[train_idx], y[test_idx]
+
+        # scale features and target
+        scaler_X = StandardScaler().fit(X_train)
+        scaler_y = StandardScaler().fit(y_train.reshape(-1, 1))
+        X_tr_scaled = scaler_X.transform(X_train)
+        X_te_scaled = scaler_X.transform(X_test)
+        y_tr_scaled = scaler_y.transform(y_train.reshape(-1, 1)).flatten()
+
+        # define and fit GPR model
+        kernel = YuKernel(v0, wl, a0, a1, v1)
+        gpr = GaussianProcessRegressor(kernel=kernel, n_restarts_optimizer=5, alpha=1e-10)
+        gpr.fit(X_tr_scaled, y_tr_scaled)
+
+        # predict and invert scaling
+        y_pred_scaled = gpr.predict(X_te_scaled)
+        y_pred = scaler_y.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
+
+        # compute MSE for this fold
+        mse_fold = mean_squared_error(y_test, y_pred)
+        mse_list.append(mse_fold)
+
+    # average MSE
+    avg_mse = np.mean(mse_list)
+    return -avg_mse
+
+# -------------------------- Evaluation Helper ---------------------------
+def evaluate_loocv(v0, a0, a1, v1, wl, X, y, **kwargs):
+    """
+    Final LOOCV evaluation to get detailed metrics.
+    """
+    loo = LeaveOneOut()
+    y_true_all, y_pred_all = [], []
+
+    for train_idx, test_idx in loo.split(X):
+        X_train, X_test = X[train_idx], X[test_idx]
+        y_train, y_test = y[train_idx], y[test_idx]
+        scaler_X = StandardScaler().fit(X_train)
+        scaler_y = StandardScaler().fit(y_train.reshape(-1, 1))
+        X_tr = scaler_X.transform(X_train)
+        X_te = scaler_X.transform(X_test)
+        y_tr = scaler_y.transform(y_train.reshape(-1, 1)).flatten()
+        kernel = YuKernel(v0, wl, a0, a1, v1)
+        gpr = GaussianProcessRegressor(kernel=kernel, n_restarts_optimizer=5, alpha=1e-10)
+        gpr.fit(X_tr, y_tr)
+        y_pred_s = gpr.predict(X_te)
+        y_pred = scaler_y.inverse_transform(y_pred_s.reshape(-1, 1)).flatten()
+        y_true_all.append(y_test[0])
+        y_pred_all.append(y_pred[0])
+
+    y_true_all = np.array(y_true_all)
+    y_pred_all = np.array(y_pred_all)
+    mse = mean_squared_error(y_true_all, y_pred_all)
+    rmse = np.sqrt(mse)
+    r2 = 1 - np.sum((y_true_all - y_pred_all)**2) / np.sum((y_true_all - np.mean(y_true_all))**2)
+    mae = mean_absolute_error(y_true_all, y_pred_all)
+    evs = explained_variance_score(y_true_all, y_pred_all)
+    return mse, rmse, r2, mae, evs, y_pred_all, y_true_all
+
+# Define a problem class
+class MyProblem(ElementwiseProblem):
+
+    def __init__(self, best_gpr, scaler_X, scaler_y, xl, xu, dim):
+        super().__init__(n_var=dim,  # Number of input features
+                         n_obj=2,  # Number of objectives
+                         n_constr=0,  # Number of constraints
+                         xl=xl,  # Lower bound for inputs
+                         xu=xu)  # Upper bound for inputs
+
+        self.best_gpr = best_gpr
+        self.scaler_X = scaler_X
+        self.scaler_y = scaler_y
+
+    def _evaluate(self, x, out, *args, **kwargs):
+        # x_scaled = self.scaler_X.transform([x])
+        y_pred, y_std = self.best_gpr.predict([x], return_std=True)     # 这里的输出y_std就是标准差了
+        # ic(x, y_pred)
+
+        y_pred_original = self.scaler_y.inverse_transform(y_pred.reshape(-1, 1)).flatten()
+        # y_std_original = y_std * self.scaler_y.scale_
+
+        y_std_original = y_std[0]   
+        y_pred_original = y_pred_original.squeeze()  # 去掉维度为1的维度
+
+        # Just use the final sampling data as the target data
+        mean_pred = y_pred_original
+        mean_std = y_std_original[-1] 
+        # ic(mean_pred, mean_std)
+
+        out["F"] = np.array([-mean_pred, -mean_std])  # Objective function values
+
+# Callback class to store the variables
+class CollectParetoFronts(Callback):
+    def __init__(self):
+        super().__init__()
+        self.pareto_fronts = []
+
+    def notify(self, algorithm):
+        pareto_front = algorithm.pop.get("F")
+        # print(f'Pareto front shape: {pareto_front.shape}')  # 打印形状以检查
+        self.pareto_fronts.append(pareto_front)
+
+def train_gpr_model(X_df, y_df, lower_bound, upper_bound, run_num, method_type, path_data):
+    """
+    Train a Gaussian Process Regression model with the given parameters.
+    """
+    # Split data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X_df, y_df, test_size=0.2, random_state=2, shuffle=True)
+
+    # Standardize the data
+    scaler_X = StandardScaler()
+    scaler_y = StandardScaler()
+    X_train_scaled = scaler_X.fit_transform(X_train)
+    X_test_scaled = scaler_X.transform(X_test)
+    y_train_scaled = scaler_y.fit_transform(y_train.reshape(-1, 1)).flatten()
+    # y_test_scaled = scaler_y.transform(y_test)
+    # ic(X_train_scaled, y_train_scaled)
+
+    # parameters bounds for Bayesian Optimization 
+    input_dim = X_df.shape[1]
+    # Dynamically set the number of wl parameters based on input_dim
+    params_bounds = {
+        'a0': (lower_bound, upper_bound),
+        'a1': (lower_bound, upper_bound),
+        'v0': (lower_bound, upper_bound),
+        'v1': (lower_bound, upper_bound),
+    }
+    for i in range(input_dim):
+        params_bounds[f'wl{i+1}'] = (lower_bound, upper_bound)
+
+    # Dynamically build the optimizer function signature for wl parameters
+    def optimizer_func(a0, a1, v0, v1, **kwargs):
+        # Only pass the correct number of wl arguments
+        wl_kwargs = {f'wl{i+1}': kwargs[f'wl{i+1}'] for i in range(input_dim)}
+        return gpr_loocv_cv(v0, a0, a1, v1, X_df, y_df, **wl_kwargs)
+
+    optimizer = BayesianOptimization(
+        f=optimizer_func,
+        pbounds=params_bounds,
+        random_state=2
+    )
+    acquisition_function = UtilityFunction(kind='ei', xi=0.1)
+    # Running the optimization
+    optimizer.maximize(init_points=2, n_iter=40, acquisition_function=acquisition_function)
+    # get the best hyperparameters
+    best_params = optimizer.max['params']
+    # Save the best hyperparameters to an Excel file
+    # check if the directory exists, if not, create it
+    directory_run_best_params = f"{path_data}\RUN-{run_num}-{method_type}"
+    if not os.path.exists(directory_run_best_params):
+        os.makedirs(directory_run_best_params)
+    directory_run_best_params_path = os.path.join(directory_run_best_params, "Bayesian_Optimisation_Results.xlsx")
+    pd.DataFrame([best_params]).to_excel(directory_run_best_params_path, index=False)
+
+    # use the best hyperparameters to create a new Gaussian Process Regression model
+    wl_list = [best_params[f'wl{i+1}'] for i in range(input_dim)]
+    best_gpr = GaussianProcessRegressor(kernel=YuKernel(best_params['v0'],
+                                                        wl_list,
+                                                        best_params['a0'],
+                                                        best_params['a1'],
+                                                        best_params['v1'])
+                                                        # , alpha=noise_var
+                                                        , n_restarts_optimizer=10, alpha=1e-10
+                                                        )
+    # train the model
+    best_gpr.fit(X_train_scaled, y_train_scaled)
+
+    # use the trained model to make predictions
+    y_pred_test, sigma_test = best_gpr.predict(X_test_scaled, return_std=True)
+    y_pred_test = scaler_y.inverse_transform(y_pred_test.reshape(-1, 1)).flatten()
+    # sigma_test = sigma_test * scaler_y.scale_
+    sigma_test = sigma_test[0]
+
+    # ic(y_pred_test, y_test, sigma_test)
+
+    mse, rmse, r_squared, mae, evs, mape = evaluate(y_test, y_pred_test)
+
+    # put the results in a table format
+    table_data = [
+        ["Mean Squared Error (MSE)", mse],
+        ["Root Mean Squared Error (RMSE)", rmse],
+        ["Mean Absolute Error (MAE)", mae],
+        ["Explained Variance Score (EVS)", evs],
+        ["Mean Absolute Percentage Error (MAPE)", mape],
+        ["R-squared (R²)", f'\033[91m{r_squared}\033[0m']
+        ]
+
+    # Output results
+    print(tabulate(table_data, headers=["Metric", "Value"], tablefmt="pretty"))
+
+    formatted_params = '\n'.join([f'\033[92m{key}\033[0m: \033[94m{value}\033[0m' for key, value in best_params.items()])
+
+    print("Best Hyperparameters:\n", formatted_params)
+ 
+    return best_gpr, scaler_X, scaler_y
+
+def MultiObjectiveOptimisation(d, best_gpr, scaler_X, scaler_y, popsize, gen, run_num, method, max_y, xl, xu, path_data, path_results, savefig):
+    """
+    Perform multi-objective optimization using Bayesian Optimization.
+    """
+    # Create problem instance
+    problem = MyProblem(best_gpr, scaler_X, scaler_y, xl, xu, d)
+
+    # Create an instance to collect data
+    collect_pf = CollectParetoFronts()
+
+    # Create algorithm instance
+    algorithm = NSGA2(pop_size=popsize) # Population size is 10.
+
+    # Execute optimization
+    res = minimize(problem,
+                algorithm,
+                termination=('n_gen', gen),   # Termination condition is 50 generations
+                callback=collect_pf,
+                verbose=True,
+                seed=1)
+
+    # Output results
+    print("The best solution by NSGA-II algorithm is: ")
+    for i in range(len(res.X)):
+        print(f"Solution-[{i}]: X = {np.round(res.X[i], 3)}, F = {np.round(res.F[i], 3)}, X_original= {np.round(scaler_X.inverse_transform([res.X[i]]), 3)}")
+
+    # Save the Pareto front and the corresponding variables to a xlxs file
+    pareto_front_df = pd.DataFrame(-res.F, columns=['Mean', 'Std'])
+    pareto_front_df['X'] = [scaler_X.inverse_transform([x]) for x in res.X]
+
+    # Check the directory exists, if not, create it
+    directory_run = f"{path_data}\RUN-{run_num}-{method}"
+    if not os.path.exists(directory_run):
+        os.makedirs(directory_run)
+    path_run_moo = os.path.join(directory_run, "pareto_front.xlsx")     # Save the Pareto front to an Excel file
+    pareto_front_df.to_excel(path_run_moo, index=False)
+
+    get_mean = []
+    get_std = []
+
+    # Plotting
+    plt.figure(figsize=(10, 6))
+    for i, pareto_front in enumerate(collect_pf.pareto_fronts):
+        # TODO:Assume mean is the first position and std is the second
+        mean_values = -pareto_front[:, 0]  # Use negative because we minimized the negative mean
+        std_values = -pareto_front[:, 1]
+        plt.scatter(mean_values, std_values, label=f'Iteration {i+1}', alpha=0.7)
+
+    plt.title('Pareto Fronts Over Iterations')
+    plt.xlabel('Prediction Mean')
+    plt.ylabel('Prediction Standard Deviation (Uncertainty)')
+    plt.grid(True)
+
+    # check if the directory exists, if not, create it
+    directory_run_re = path_results
+    if not os.path.exists(directory_run_re):
+        os.makedirs(directory_run_re)
+    directory_run_results = os.path.join(directory_run_re, f'Pareto-{run_num}-{method}')
+    if not os.path.exists(directory_run_results):
+        os.makedirs(directory_run_results)
+    if savefig:
+        plt.savefig(os.path.join(directory_run_results, 'pareto_fronts_overview_fulldata.png'), dpi=300, bbox_inches='tight')  # TODO: code the if to choose save or not
+    # plt.show()
+    print(f"The Pareto fronts overview plot has been saved to {os.path.join(directory_run_results, 'pareto_fronts_overview_fulldata.png')}")
+
+    for i, pareto_front in enumerate(collect_pf.pareto_fronts):
+        # plt.figure(figsize=(10, 8))
+        mean_values = -pareto_front[:, 0]
+        std_values = -pareto_front[:, 1]
+        plt.scatter(mean_values, std_values, c='red', edgecolors='k', alpha=0.7)
+        # ic(mean_values, std_values)
+
+        # Calculate the maximum cumulative concentration value in current pareto front iteration
+        cumulative_concentrations = np.add(-mean_values, std_values)
+        # ic(cumulative_concentrations)
+        max_index = np.argmax(cumulative_concentrations)
+        max_point_mean = mean_values[max_index]
+        max_point_std = std_values[max_index]
+
+        # 绘制通过累计浓度最高点的垂直虚线// Change to draw the highest cumulative of permeated in current dataset, from 'max_point_mean' to 'max_y'
+        plt.axvline(x=max_y, color='black', linestyle='--', label='The incumbent best', alpha=0.8)
+
+        # 添加累计浓度最高点的文本标签
+        # plt.text(max_point_mean, max_point_std, f'({max_point_mean:.3f}, {max_point_std:.3f})',
+                #  color='black', verticalalignment='top')
+        
+        plt.title(f'Pareto Front at Iteration {i+1}')
+        plt.xlabel('Prediction Mean')
+        plt.ylabel('Prediction Standard Deviation (Uncertainty)')
+        plt.legend()
+        # plt.grid(True)
+        
+        # 构建文件完整路径
+        file_name = f'Pareto_Iteration_{i+1}.png'
+        file_path = os.path.join(directory_run_results, file_name)
+        
+        # 保存图形到指定路径
+        if savefig:
+            plt.savefig(file_path, dpi=300, bbox_inches='tight')   
+        plt.close()  # 关闭图形以节省内存
+    print(f"Pareto front plots saved to {directory_run_results}")
+
+    # 基于多目标优化结果进行决策
+    for i in range(len(res.X)):
+        x = res.X[i]
+        mean_pred, std_pred = res.F[i]
+        get_mean.append(-mean_pred)
+        get_std.append(-std_pred)
+
+    get_mean = np.array(get_mean)
+    get_std = np.array(get_std)
+
+    # ic(get_mean, get_std)               # Pareto solution mean and std
+    # Plot the pure mean&std with threshold of best concentration
+    plt.errorbar(range(len(get_mean)), get_mean, yerr=get_std, fmt='o', ecolor='blue', capsize=3, color='red', marker='o', mfc='white', mec='red', mew=2)
+
+    plt.axhline(y=max_y, color='grey', linestyle='--', label='The incumbent best')    # TODO: This line should be the highest line of current history dataset.
+    # plt.text(0, max_point_Efficient_solution_cumulative_concentration, f'({max_point_mean:.3f}, {max_point_std:.3f})', color='black', verticalalignment='bottom')
+    plt.xlabel('Pareto Points No.')
+    plt.ylabel('Cumulative amount of ibu release (μg/cm²)')
+    plt.legend()
+    if savefig:
+        plt.savefig(os.path.join(directory_run_results, 'cumulative_concentration.png'), dpi=300, bbox_inches='tight')  
+    # plt.show()
+    print(f"The cumulative concentration plot has been saved to {os.path.join(directory_run_results, 'cumulative_concentration.png')}")
+
+# ------------------------------------------ Main Code ------------------------------------------
+
+if __name__ == "__main__":
+    # # set the parameters
+    # lower_bound = 1e-2
+    # upper_bound = 1e2
+
+    # file_path = "Multi-Objective Optimisation\Benchmark\Package Module\Dataset\lhs_samples_ackley.xlsx"
+    # run_num = 1
+    # method = 'PROPOSED'  # Method name for the run
+    # df = pd.read_excel(file_path, sheet_name=f'INITIAL')  # Read the initial dataset
+    # # X = df[[f"x{i+1}" for i in range(3)]].to_numpy(dtype=float)  # Shape (20, 3)
+    # # y = df['Ackley'].to_numpy(dtype=float)  # Shape (20,)
+
+    # max_y = np.max(y)  # Get the maximum value in y for the incumbent best
+
+    # # train the GPR model with the initial dataset
+    # best_gpr, scaler_X, scaler_y= train_gpr_model(X, y, lower_bound, upper_bound, run_num, method)
+
+    # # Perform multi-objective optimisation
+    # popsize = 10  # Population size for NSGA-II
+    # gen = 50  # Number of generations for NSGA-II
+
+    # # define the lower and upper bounds for ibuprofen excipients
+    # X_lower = np.array([-5, -5, -5])  # lower bounds of ibuprofen excipients
+    # X_upper = np.array([10, 10, 10])   # upper bounds of ibuprofen excipients
+
+    # # use the scaler to transform the lower and upper bounds
+    # xl = scaler_X.transform([X_lower])[0]
+    # xu = scaler_X.transform([X_upper])[0]
+    # ic(xl, xu)
+
+    # # Perform multi-objective optimisation
+    # MultiObjectiveOptimisation(best_gpr, scaler_X, scaler_y, popsize, gen, run_num, method, max_y, xl, xu)
+
+    # print("Successful multi-objective optimisation completed!!!")
+    
+    pass
