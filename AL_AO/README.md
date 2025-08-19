@@ -1,4 +1,4 @@
-#  <p align="center">Active learning-based adaptive optimisation for developing drug formulations
+#  <p align="center">Active learning-based adaptive optimisation for developing dermal drug formulations
 
 This repository includes all of codes about active learning-based adaptive optimisation for developing dermal drug formulations.
 
