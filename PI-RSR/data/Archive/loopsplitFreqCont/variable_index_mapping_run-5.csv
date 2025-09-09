@@ -1,0 +1,32 @@
+Variable,Index
+C_pg / C_eth,0
+sqrt(t),1
+C_pg * log(t),2
+t - sqrt(t),3
+C_eth^2,4
+log(t),5
+C_pg * C_pol,6
+C_eth / C_pol,7
+C_pg * C_eth,8
+1/t,9
+sqrt(C_pg * log(t)),10
+C_pol^2,11
+t,12
+C_eth * log(t),13
+C_pg,14
+C_eth * t,15
+C_eth,16
+C_pg / C_eth - 0.28392357,17
+inv(C_eth - 15.084822) / C_pol,18
+C_pg * C_eth * -5.6564804e-5,19
+1-exp(-t),20
+exp(log(t)),21
+inv(C_eth - 15.084822) / C_pol - -2.3647997,22
+sqrt(inv(C_eth - 15.084822) / C_pol - -2.3647997),23
+exp(log(t)) - C_pg / C_eth,24
+exp(-t),25
+inv(C_pg * C_eth),26
+inv(1/t),27
+C_pg^2,28
+C_pg * t,29
+C_pol,30

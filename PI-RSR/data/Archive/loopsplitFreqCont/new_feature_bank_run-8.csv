@@ -1,0 +1,3 @@
+Original Structure,Feature Expression
+inv(x0),inv(C_pg * C_eth * -5.6564804e-5 * C_eth)
+exp(x0),exp(C_pg * C_eth * -5.6564804e-5 * C_eth)

@@ -1,0 +1,18 @@
+0
+exp(C_pg * C_eth / 238.5248)
+C_pol
+t
+C_eth
+C_pg
+C_pg / C_eth
+log(t)
+exp(-t)
+C_pg * t
+C_pg * log(t)
+C_eth * log(t)
+1/t
+1-exp(-t)
+exp(C_pg * C_eth / 238.5248) / C_pg / C_eth
+sqrt(t)
+t - sqrt(t)
+C_eth * t

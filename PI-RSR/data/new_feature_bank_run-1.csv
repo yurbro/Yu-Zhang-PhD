@@ -1,0 +1,4 @@
+Original Structure,Feature Expression
+log(x11),log(C_pg / C_eth)
+sqrt(x11),sqrt(C_pg / C_eth)
+x8 - x13,t - sqrt(t)

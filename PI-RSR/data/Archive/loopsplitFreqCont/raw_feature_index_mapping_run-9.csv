@@ -1,0 +1,60 @@
+Variable,Index
+C_pol,x0
+C_eth,x1
+C_pg,x2
+t,x3
+sqrt(t),x4
+log(t),x5
+1/t,x6
+exp(-t),x7
+1-exp(-t),x8
+C_pg * C_eth,x9
+C_pg * C_pol,x10
+C_eth * C_pol,x11
+C_pg / C_pol,x12
+C_pg / C_eth,x13
+C_eth / C_pol,x14
+C_pg^2,x15
+C_eth^2,x16
+C_pol^2,x17
+C_pg * log(t),x18
+C_pg * log(t),x19
+C_eth * log(t),x20
+C_pg * log(t),x21
+C_eth * t,x22
+C_pg * t,x23
+exp(log(t)),x24
+C_pg / C_eth - 0.28392357,x25
+11.411565 - C_pg,x26
+C_eth - 13.86362,x27
+C_eth - 13.869623,x28
+11.407039 - C_pg,x29
+14.275915 - C_eth,x30
+C_eth - 15.084822,x31
+inv(C_eth - 15.084822),x32
+sqrt(C_pg * C_eth),x33
+sqrt(C_pg * log(t)),x34
+inv(C_eth - 15.084822) - C_eth,x35
+inv(C_pg * C_eth),x36
+inv(C_eth - 15.084822) / C_pol,x37
+inv(1/t),x38
+inv(C_eth - 15.084822) / C_pol - -10.28436,x39
+exp(log(t)) - C_pg / C_eth,x40
+inv(C_eth - 15.084822) / C_pol - -2.4267037,x41
+C_pg * C_eth * -5.6564804e-5,x42
+inv(C_eth - 15.084822) / C_pol - -2.3647997,x43
+3.761387e-5 / inv(C_pg * C_eth),x44
+t - sqrt(t),x45
+sqrt(inv(C_eth - 15.084822) / C_pol - -2.3647997),x46
+C_pg * C_eth * -5.6564804e-5 * C_eth,x47
+C_eth * C_pg * C_eth * -5.6564804e-5,x48
+0.11214635 - C_pg * C_eth * -5.6564804e-5,x49
+inv(C_pg * C_eth) * 50.729774,x50
+inv(C_pg * C_eth) * 25.895191,x51
+inv(C_pg * C_eth) * 25.895184,x52
+log(inv(1/t)),x53
+log(C_pol),x54
+log(C_pg * t),x55
+log(C_pg),x56
+inv(C_pg * C_eth * -5.6564804e-5 * C_eth),x57
+exp(C_pg * C_eth * -5.6564804e-5 * C_eth),x58

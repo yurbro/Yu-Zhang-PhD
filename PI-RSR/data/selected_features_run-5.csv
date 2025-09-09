@@ -1,0 +1,19 @@
+0
+C_pg * C_eth
+exp(-t)
+C_pol
+t - sqrt(t) + exp(-t)
+C_eth * log(t)
+C_pg * log(t)
+exp(C_pg / C_eth)
+C_eth
+log(t)
+1-exp(-t)
+t
+C_eth * t
+1/t
+t - sqrt(t)
+inv(C_pg * C_eth)
+C_pg * t
+sqrt(t)
+C_pg

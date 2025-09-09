@@ -1,0 +1,4 @@
+Original Structure,Feature Expression
+sqrt(x0),sqrt(C_eth)
+sqrt(x9),sqrt(C_pg / C_eth)
+x7 - 48.393196,C_pg * C_eth - 48.393196

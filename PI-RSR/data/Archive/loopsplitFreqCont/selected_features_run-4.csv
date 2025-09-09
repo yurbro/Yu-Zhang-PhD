@@ -1,0 +1,30 @@
+0
+C_pg / C_eth
+sqrt(t)
+C_pg * log(t)
+C_eth^2
+log(t)
+C_pg * C_pol
+C_eth / C_pol
+C_pg * C_eth
+1/t
+sqrt(C_pg * log(t))
+C_pol^2
+t
+C_eth * log(t)
+C_pg
+C_eth * t
+C_eth
+C_pg / C_eth - 0.28392357
+inv(C_eth - 15.084822) / C_pol
+C_pg * C_eth * -5.6564804e-5
+1-exp(-t)
+exp(log(t))
+inv(C_eth - 15.084822) / C_pol - -2.3647997
+exp(log(t)) - C_pg / C_eth
+exp(-t)
+inv(C_pg * C_eth)
+inv(1/t)
+C_pg^2
+C_pg * t
+C_pol

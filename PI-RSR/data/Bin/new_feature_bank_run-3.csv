@@ -1,0 +1,7 @@
+Original Structure,Feature Expression
+x6 + x13,log(t) * 2.233255 + 1-exp(-t)
+x2 + -24.86965,C_pol + -24.86965
+x5 * -9.208159,C_pg / C_eth * -9.208159
+x10 * -0.24116583,C_pg * log(t) * -0.24116583
+x5 + 1.4210596,C_pg / C_eth + 1.4210596
+sqrt(x2),sqrt(C_pol)

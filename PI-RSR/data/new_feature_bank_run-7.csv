@@ -1,0 +1,3 @@
+Original Structure,Feature Expression
+sqrt(x2),sqrt(C_pg * C_eth)
+sqrt(x10),sqrt(inv(inv(C_pg * C_eth)))

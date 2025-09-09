@@ -1,0 +1,4 @@
+Original Structure,Feature Expression
+log(x24),log(C_pol)
+log(x23),log(C_pg * t)
+log(x13),log(C_pg)

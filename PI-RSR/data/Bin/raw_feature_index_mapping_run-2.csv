@@ -1,0 +1,27 @@
+Variable,Index
+C_pol,x0
+C_eth,x1
+C_pg,x2
+t,x3
+sqrt(t),x4
+log(t),x5
+1/t,x6
+exp(-t),x7
+1-exp(-t),x8
+t^2,x9
+C_pg * C_eth,x10
+C_pg * C_pol,x11
+C_eth * C_pol,x12
+C_pg / C_pol,x13
+C_pg / C_eth,x14
+C_eth / C_pol,x15
+C_pg^2,x16
+C_eth^2,x17
+C_pol^2,x18
+C_pg * log(t),x19
+C_pg * log(t),x20
+C_eth * log(t),x21
+C_pg * log(t),x22
+C_eth * t,x23
+C_pg * t,x24
+t - sqrt(t),x25
