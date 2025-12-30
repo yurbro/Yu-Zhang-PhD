@@ -1,4 +1,4 @@
-#  <p align="center">Physical constraint-guided symbolic regression for interpretable dermal premeation model discovery
+#  <p align="center">Constraint-guided symbolic regression for optimising dermal drug formulation
 
 This repository includes all of codes about Constraint-guided symbolic regression (SymODE) algorithm.
 
