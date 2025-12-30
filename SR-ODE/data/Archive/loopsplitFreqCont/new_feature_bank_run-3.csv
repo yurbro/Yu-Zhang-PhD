@@ -1,8 +1,0 @@
-Original Structure,Feature Expression
-inv(x8),inv(1/t)
-x17 - -10.28436,inv(C_eth - 15.084822) / C_pol - -10.28436
-x19 - x0,exp(log(t)) - C_pg / C_eth
-x17 - -2.4267037,inv(C_eth - 15.084822) / C_pol - -2.4267037
-x7 * -5.6564804e-5,C_pg * C_eth * -5.6564804e-5
-x17 - -2.3647997,inv(C_eth - 15.084822) / C_pol - -2.3647997
-3.761387e-5 / x21,3.761387e-5 / inv(C_pg * C_eth)

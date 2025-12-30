@@ -1,8 +1,0 @@
-expression_id,complexity,loss
-exp((sqrt(t))),2,3948.237
-((t - sqrt(t)) * 11.77437) + (exp(C_pg / C_eth)),7,485.62988
-(t - sqrt(t) + exp(-t)) * (((C_pg * C_eth) * -0.011393888) + 14.49453),8,394.03223
-(t - sqrt(t) + exp(-t)) * (((inv(inv(C_pg * C_eth))) * -0.08097794) + (((C_eth) + (sqrt((C_pg)) * 8.821154)) + -18.900698)),10,316.78534
-((((C_pg * C_eth) * -0.0385792) + sqrt(inv(24.923012 - (C_pol)) + (inv(inv(C_pg * C_eth))))) * (t - sqrt(t) + exp(-t))) * 1.9768325,14,289.70157
-((inv((24.89669 - (C_pol)) * (C_pg)) + sqrt((C_pg * C_eth))) + ((inv(inv(C_pg * C_eth))) * -0.039275162)) * ((t - sqrt(t) + exp(-t)) * 2.0531404),17,264.69086
-((t - sqrt(t) + exp(-t)) * 2.0515687) * ((inv((24.897438 - (C_pol)) * (C_pg)) + ((inv(inv(C_pg * C_eth))) * -0.0396406)) + sqrt((exp(C_pg / C_eth)) + (C_pg * C_eth))),21,255.0045

@@ -1,0 +1,116 @@
+{
+  "recommend_top2": {
+    "indices_in_table": [
+      0,
+      1
+    ],
+    "rows": [
+      {
+        "Q_obs": 3008.198195,
+        "Q_pred": 2191.061042,
+        "time_h": 6.0,
+        "_rid": 9,
+        "AUC_obs": 9200.8267426,
+        "AUC_pred": 6957.380725104,
+        "rank_Q6_pred": 1,
+        "rank_AUC_pred": 1,
+        "rank_consensus_raw": 1.0,
+        "rank_consensus": 1,
+        "rank_agree_gap": 0,
+        "gap_Q6_next": 5.605282999999872,
+        "edge_score": NaN,
+        "score_gap": 0.09199457855596227,
+        "score_edge": NaN,
+        "score_agree": NaN,
+        "score_overall": 0.045997289277981135
+      },
+      {
+        "Q_obs": 3092.064125,
+        "Q_pred": 2185.455759,
+        "time_h": 6.0,
+        "_rid": 5,
+        "AUC_obs": 9329.6445689,
+        "AUC_pred": 6918.17367492075,
+        "rank_Q6_pred": 2,
+        "rank_AUC_pred": 2,
+        "rank_consensus_raw": 2.0,
+        "rank_consensus": 2,
+        "rank_agree_gap": 0,
+        "gap_Q6_next": 0.08905499999991662,
+        "edge_score": NaN,
+        "score_gap": 0.0014495954648185369,
+        "score_edge": NaN,
+        "score_agree": NaN,
+        "score_overall": 0.0007247977324092684
+      }
+    ],
+    "objective": "maximize diversity + score_overall; minimize consensus rank"
+  },
+  "recommend_top3": {
+    "indices_in_table": [
+      0,
+      1,
+      2
+    ],
+    "rows": [
+      {
+        "Q_obs": 3008.198195,
+        "Q_pred": 2191.061042,
+        "time_h": 6.0,
+        "_rid": 9,
+        "AUC_obs": 9200.8267426,
+        "AUC_pred": 6957.380725104,
+        "rank_Q6_pred": 1,
+        "rank_AUC_pred": 1,
+        "rank_consensus_raw": 1.0,
+        "rank_consensus": 1,
+        "rank_agree_gap": 0,
+        "gap_Q6_next": 5.605282999999872,
+        "edge_score": NaN,
+        "score_gap": 0.09199457855596227,
+        "score_edge": NaN,
+        "score_agree": NaN,
+        "score_overall": 0.045997289277981135
+      },
+      {
+        "Q_obs": 3092.064125,
+        "Q_pred": 2185.455759,
+        "time_h": 6.0,
+        "_rid": 5,
+        "AUC_obs": 9329.6445689,
+        "AUC_pred": 6918.17367492075,
+        "rank_Q6_pred": 2,
+        "rank_AUC_pred": 2,
+        "rank_consensus_raw": 2.0,
+        "rank_consensus": 2,
+        "rank_agree_gap": 0,
+        "gap_Q6_next": 0.08905499999991662,
+        "edge_score": NaN,
+        "score_gap": 0.0014495954648185369,
+        "score_edge": NaN,
+        "score_agree": NaN,
+        "score_overall": 0.0007247977324092684
+      },
+      {
+        "Q_obs": 3305.135581,
+        "Q_pred": 2185.366704,
+        "time_h": 6.0,
+        "_rid": 4,
+        "AUC_obs": 9322.177485775,
+        "AUC_pred": 6917.5540206962505,
+        "rank_Q6_pred": 3,
+        "rank_AUC_pred": 3,
+        "rank_consensus_raw": 3.0,
+        "rank_consensus": 3,
+        "rank_agree_gap": 0,
+        "gap_Q6_next": 0.005231999999978143,
+        "edge_score": NaN,
+        "score_gap": 7.370017592847794e-05,
+        "score_edge": NaN,
+        "score_agree": NaN,
+        "score_overall": 3.685008796423897e-05
+      }
+    ],
+    "objective": "maximize diversity + score_overall; minimize consensus rank"
+  }
+}

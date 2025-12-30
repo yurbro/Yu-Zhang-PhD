@@ -1,6 +1,0 @@
-Original Structure,Feature Expression
-sqrt(x5),sqrt(C_pg * C_eth)
-sqrt(x2),sqrt(C_pg * log(t))
-x16 - x12,inv(C_eth - 15.084822) - C_eth
-inv(x5),inv(C_pg * C_eth)
-x16 / x18,inv(C_eth - 15.084822) / C_pol

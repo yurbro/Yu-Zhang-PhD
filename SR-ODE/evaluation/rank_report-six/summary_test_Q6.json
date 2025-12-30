@@ -1,0 +1,13 @@
+{
+  "N": 6,
+  "rho": 0.20000000000000004,
+  "tau_b": 0.2,
+  "pairwise": 0.6,
+  "pairwise_correct": 9,
+  "pairwise_M": 15,
+  "pairwise_p": 0.303619384765625,
+  "prec_at_k": 0.5,
+  "rec_at_k": 0.5,
+  "hit_at_k": 1.0,
+  "k": 2
+}

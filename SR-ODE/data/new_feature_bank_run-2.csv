@@ -1,5 +1,0 @@
-Original Structure,Feature Expression
-exp(x12),exp(C_pg / C_eth)
-x15 * -0.3741939,C_pg * -0.3741939
-x15 * -0.37614924,C_pg * -0.37614924
-x11 + x1,t - sqrt(t) + exp(-t)

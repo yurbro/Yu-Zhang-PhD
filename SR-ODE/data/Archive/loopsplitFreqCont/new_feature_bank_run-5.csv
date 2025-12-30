@@ -1,7 +1,0 @@
-Original Structure,Feature Expression
-x19 * x16,C_pg * C_eth * -5.6564804e-5 * C_eth
-x16 * x19,C_eth * C_pg * C_eth * -5.6564804e-5
-0.11214635 - x19,0.11214635 - C_pg * C_eth * -5.6564804e-5
-x26 * 50.729774,inv(C_pg * C_eth) * 50.729774
-x26 * 25.895191,inv(C_pg * C_eth) * 25.895191
-x26 * 25.895184,inv(C_pg * C_eth) * 25.895184

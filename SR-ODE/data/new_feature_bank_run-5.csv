@@ -1,3 +1,0 @@
-Original Structure,Feature Expression
-exp(x14),exp(inv(C_pg * C_eth))
-inv(x14),inv(inv(C_pg * C_eth))

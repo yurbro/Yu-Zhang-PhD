@@ -1,0 +1,30 @@
+digraph {
+	bgcolor=white rankdir=TB
+	node [color=black fillcolor=white fontname=Helvetica fontsize=12 shape=rect style="rounded,filled"]
+	edge [fontname=Helvetica fontsize=11]
+	init [label="Population initialisation
+(random expression trees)"]
+	var [label="Variation
+(Crossover / Mutation)"]
+	hard [label="Hard-constraint screening
+• variable coverage
+• structural admissibility
+• numerical stability
+• domain validity"]
+	fit [label="Fitness evaluation
+Residual loss + penalties
+L = Σ(dQ/dt - fθ)^2 + λ_mono P_mono + λ_comp P_comp"]
+	sel [label="Selection
+(tournament / roulette / rank)"]
+	term [label="Termination?
+(max generations or convergence)" shape=diamond]
+	init -> var
+	var -> hard
+	hard -> fit
+	fit -> sel
+	sel -> term
+	term -> var [label=No fontsize=10]
+	term -> init [label="Restart?" fontsize=10 style=dashed]
+	note [label="Hard constraints are enforced before fitness evaluation. Soft constraints enter via penalties in the fitness function." color=black fillcolor=white fontsize=10 shape=note]
+	note -> hard [style=invis]
+}

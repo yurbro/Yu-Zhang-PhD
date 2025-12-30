@@ -1,0 +1,23 @@
+{
+  "Q6_table_test": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\Q6_table_test.csv",
+  "summary_test_Q6": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\summary_test_Q6.json",
+  "bump_test_Q6": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\bump_test_Q6.png",
+  "heatmap_test_Q6": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\pairwise_heatmap_test_Q6.png",
+  "gains_curve_Q6": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\gains_curve_Q6.png",
+  "metrics_by_time": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\metrics_by_time.csv",
+  "rho_by_time": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\rho_by_time.png",
+  "region_out_metrics": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\metrics_region_out.csv",
+  "AUC_table_test": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\AUC_table_test.csv",
+  "summary_test_AUC": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\summary_test_AUC.json",
+  "bump_test_AUC": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\bump_test_AUC.png",
+  "heatmap_test_AUC": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\pairwise_heatmap_test_AUC.png",
+  "gains_curve_AUC": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\gains_curve_AUC.png",
+  "topk_Q6": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\topk_Q6.csv",
+  "topk_Q6_plot": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\topk_Q6.png",
+  "topk_AUC": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\topk_AUC.csv",
+  "topk_AUC_plot": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\topk_AUC.png",
+  "candidate_consensus_table": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\candidate_consensus_table.csv",
+  "recommendations": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\recommendations.json",
+  "gains_curve_Q6_multi": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\gains_curve_Q6_multi.png",
+  "gains_curve_AUC_multi": "Symbolic Differential\\SymODE\\evaluation\\rank_report-six\\gains_curve_AUC_multi.png"
+}

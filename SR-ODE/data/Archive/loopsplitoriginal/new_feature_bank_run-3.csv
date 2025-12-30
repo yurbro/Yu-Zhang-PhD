@@ -1,5 +1,0 @@
-Original Structure,Feature Expression
-14.748968 - x2,14.748968 - C_eth
-x12 / 238.5248,C_pg * C_eth / 238.5248
-exp(x12 / 238.5248),exp(C_pg * C_eth / 238.5248)
-x12 / 78.53994,C_pg * C_eth / 78.53994
