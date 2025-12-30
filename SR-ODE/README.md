@@ -1,4 +1,4 @@
-#  <p align="center">Physics-inspired recursive symbolic regression for interpretable dermal premeation model discovery
+#  <p align="center">Physical constraint-guided symbolic regression for interpretable dermal premeation model discovery
 
 This repository includes all of codes about PI-RSR algorithm.
 
