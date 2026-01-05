@@ -1,0 +1,53 @@
+barrier_category:
+  skin:
+    examples:
+      - human skin
+      - porcine skin
+      - rat skin
+      - mouse skin
+      - reconstructed human epidermis
+    synonyms_map:
+      human:
+        - human skin
+        - human epidermis
+        - dermatomed human skin
+        - excised human skin
+      porcine:
+        - porcine skin
+        - pig skin
+        - pig ear skin
+        - porcine ear skin
+      rat:
+        - rat skin
+      mouse:
+        - mouse skin
+      reconstructed:
+        - reconstructed human epidermis
+        - rhe
+        - reconstructed skin
+
+  synthetic_membrane:
+    examples:
+      - nylon membrane
+      - strat-m
+      - cellulose acetate membrane
+      - dialysis membrane
+    synonyms_map:
+      nylon:
+        - nylon
+        - nylon membrane
+        - polyamide membrane
+      strat_m:
+        - strat-m
+        - strat m
+        - stratm
+        - strat-m membrane
+      cellulose_acetate:
+        - cellulose acetate
+        - cellulose acetate membrane
+      dialysis:
+        - dialysis membrane
+        - regenerated cellulose membrane
+      ptfe:
+        - ptfe
+        - teflon membrane

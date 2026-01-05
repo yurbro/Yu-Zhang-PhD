@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this dataset, please cite it as below."
+title: "PermeationNet-IBU-Franz-5pct (v1): LLM-assisted extraction of in vitro permeation/release endpoints"
+version: "1.0.0"
+date-released: "2026-01-05"
+authors:
+  - family-names: "Zhang"
+    given-names: "Yu"
+    affiliation: "University of Surrey, Department of Chemical and Process Engineering"
+keywords:
+  - "in vitro permeation test"
+  - "IVPT"
+  - "in vitro release test"
+  - "IVRT"
+  - "Franz diffusion cell"
+  - "ibuprofen"
+  - "skin permeation"
+  - "data extraction"
+  - "large language models"
+license: "CC-BY-4.0"
+repository-code: ""
+url: ""
+abstract: >
+  A curated, evidence-linked dataset of in vitro permeation/release studies of ibuprofen 5% w/w using Franz diffusion cells.
+  Records include final-time cumulative amount endpoints with explicit sampling time, extracted from full-text PDFs using an LLM-assisted pipeline
+  with verification and optional figure digitization.

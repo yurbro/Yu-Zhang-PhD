@@ -1,0 +1,113 @@
+# Key ingredients whitelist for formulation completeness (A/B).
+# Canonical keys are snake_case; synonyms are matched case-insensitively.
+
+water:
+  synonyms:
+    - water
+    - purified water
+    - ultrapure water
+    - deionized water
+    - di water
+    - milli-q water
+    - milli q water
+
+ethanol:
+  synonyms:
+    - ethanol
+    - etoh
+    - ethyl alcohol
+    - alcohol (ethyl)
+
+propylene_glycol:
+  synonyms:
+    - propylene glycol
+    - pg
+    - 1,2-propanediol
+    - propanediol
+
+glycerol:
+  synonyms:
+    - glycerol
+    - glycerin
+
+isopropanol:
+  synonyms:
+    - isopropanol
+    - ipa
+    - 2-propanol
+    - isopropyl alcohol
+
+peg_400:
+  synonyms:
+    - peg 400
+    - polyethylene glycol 400
+    - poly(ethylene glycol) 400
+
+poloxamer_407:
+  synonyms:
+    - poloxamer 407
+    - p407
+    - pluronic f127
+    - lutrol f127
+    - poloxamer 407 (pluronic f127)
+
+carbomer:
+  synonyms:
+    - carbomer
+    - carbopol
+    - carbopol 940
+    - carbopol 980
+    - carbomer 940
+    - carbomer 980
+
+hpmc:
+  synonyms:
+    - hpmc
+    - hydroxypropyl methylcellulose
+    - hypromellose
+
+hpc:
+  synonyms:
+    - hpc
+    - hydroxypropyl cellulose
+
+pvp:
+  synonyms:
+    - pvp
+    - polyvinylpyrrolidone
+    - povidone
+
+mct:
+  synonyms:
+    - mct
+    - medium chain triglycerides
+    - mct oil
+    - caprylic/capric triglyceride
+    - caprylic capric triglyceride
+
+ipm:
+  synonyms:
+    - ipm
+    - isopropyl myristate
+    - isopropyl tetradecanoate
+
+mineral_oil:
+  synonyms:
+    - mineral oil
+    - liquid paraffin
+    - paraffinum liquidum
+
+transcutol:
+  synonyms:
+    - transcutol
+    - diethylene glycol monoethyl ether
+    - dgmee
+
+oleic_acid:
+  synonyms:
+    - oleic acid
+
+dmso:
+  synonyms:
+    - dmso
+    - dimethyl sulfoxide

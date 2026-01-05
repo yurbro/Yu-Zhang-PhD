@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PermeationNet IBU-Franz v1 Record",
+  "type": "object",
+  "required": [
+    "record_id",
+    "paper",
+    "device",
+    "study_type",
+    "barrier",
+    "api",
+    "formulation",
+    "endpoints",
+    "evidence",
+    "formulation_completeness_class"
+  ],
+  "properties": {
+    "record_id": { "type": "string" },
+
+    "paper": {
+      "type": "object",
+      "required": ["doi_or_pmid", "year", "title"],
+      "properties": {
+        "doi_or_pmid": { "type": "string" },
+        "year": { "type": "integer" },
+        "title": { "type": "string" },
+        "journal": { "type": "string" }
+      }
+    },
+
+    "device": {
+      "type": "object",
+      "required": ["name", "franz_confirmed"],
+      "properties": {
+        "name": { "type": "string", "enum": ["Franz diffusion cell"] },
+        "franz_confirmed": { "type": "string", "enum": ["yes", "uncertain"] },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "study_type": { "type": "string", "enum": ["IVPT", "IVRT"] },
+
+    "barrier": {
+      "type": "object",
+      "required": ["category", "name"],
+      "properties": {
+        "category": { "type": "string", "enum": ["skin", "synthetic_membrane"] },
+        "name": { "type": "string" },
+        "details": { "type": "string" }
+      }
+    },
+
+    "api": {
+      "type": "object",
+      "required": ["name", "conc"],
+      "properties": {
+        "name": { "type": "string", "enum": ["ibuprofen"] },
+        "smiles": { "type": "string" },
+        "conc": {
+          "type": "object",
+          "required": ["raw", "basis", "is_target_5pct"],
+          "properties": {
+            "raw": { "type": "string" },
+            "value": { "type": "number" },
+            "unit": { "type": "string" },
+            "basis": { "type": "string", "enum": ["w/w", "w/v", "v/v", "mg/mL", "unknown"] },
+            "w_w_percent": { "type": "number" },
+            "is_target_5pct": { "type": "string", "enum": ["yes", "no", "uncertain"] }
+          }
+        }
+      }
+    },
+
+    "formulation": {
+      "type": "object",
+      "required": ["dosage_form", "ingredients"],
+      "properties": {
+        "dosage_form": { "type": "string" },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name_raw"],
+            "properties": {
+              "name_raw": { "type": "string" },
+              "name_canonical": { "type": "string" },
+              "role": { "type": "string" },
+              "conc_raw": { "type": "string" },
+              "conc_value": { "type": "number" },
+              "conc_unit": { "type": "string" },
+              "conc_basis": { "type": "string", "enum": ["w/w", "w/v", "v/v", "mg/mL", "balance", "unknown"] },
+              "missing_conc": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+
+    "endpoints": {
+      "type": "object",
+      "required": ["Q_final"],
+      "properties": {
+        "Q_final": {
+          "type": "object",
+          "required": ["value", "unit", "time_h"],
+          "properties": {
+            "value": { "type": "number" },
+            "unit": { "type": "string" },
+            "time_h": { "type": "number" },
+            "normalized_value_ug_per_cm2": { "type": "number" }
+          }
+        },
+        "flux": {
+          "type": "object",
+          "properties": {
+            "value": { "type": "number" },
+            "unit": { "type": "string" },
+            "normalized_value_ug_per_cm2_per_h": { "type": "number" }
+          }
+        },
+        "J_ss": {
+          "type": "object",
+          "properties": {
+            "value": { "type": "number" },
+            "unit": { "type": "string" },
+            "normalized_value_ug_per_cm2_per_h": { "type": "number" }
+          }
+        }
+      }
+    },
+
+    "conditions": {
+      "type": "object",
+      "properties": {
+        "temperature_C": { "type": "number" },
+        "receptor_medium": { "type": "string" },
+        "area_cm2": { "type": "number" }
+      }
+    },
+
+    "evidence": {
+      "type": "object",
+      "required": ["source_type", "locator", "snippet"],
+      "properties": {
+        "source_type": { "type": "string", "enum": ["Table", "Text", "Supplement"] },
+        "locator": { "type": "string" },
+        "snippet": { "type": "string" }
+      }
+    },
+
+    "formulation_completeness_class": { "type": "string", "enum": ["A", "B"] },
+    "confidence_score": { "type": "number" },
+    "notes": { "type": "string" }
+  }
+}
