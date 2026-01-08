@@ -7,9 +7,9 @@ setx GROQ_API_KEY "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"
 OpenAI Platform
 
 ```My
-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
+**************
 
-setx OPENAI_API_KEY "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"
+setx OPENAI_API_KEY "************"
 ```
 
 - Install the OpenAI Python SDK and execute the code below to generate a haiku for free using the gpt-5-nano model via the Responses API.
@@ -22,7 +22,7 @@ pip install openai
 from openai import OpenAI
 
 client = OpenAI(
-  api_key="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"
+  api_key="**************"
 )
 
 response = client.responses.create(
