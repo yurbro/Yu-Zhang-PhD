@@ -11,7 +11,7 @@ print(response.output_text)
 # from openai import OpenAI
 
 # client = OpenAI(
-#   api_key="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"
+#   api_key="******"
 # )
 
 # response = client.responses.create(
