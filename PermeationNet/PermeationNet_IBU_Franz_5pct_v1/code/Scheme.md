@@ -1,7 +1,7 @@
 **Config LLM 设置环境变量**
 
 ```
-setx GROQ_API_KEY "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"
+setx GROQ_API_KEY "*****************"
 ```
 
 OpenAI Platform
