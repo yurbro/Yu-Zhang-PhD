@@ -204,7 +204,7 @@ The decision threshold **T = 0.2** was determined through a systematic process:
 If you use this code or find the work helpful, please cite our paper:
 
 ```bibtex
-@article{zhang2025edma,
+@article{ZHANG2025109224,
   title     = {An early decision-making algorithm for accelerating topical drug formulation optimisation},
   author    = {Zhang, Yu and Xiao, Yongrui and Tsaoulidis, Dimitrios and Chen, Tao},
   journal   = {Computers and Chemical Engineering},
@@ -228,7 +228,7 @@ If you use this code or find the work helpful, please cite our paper:
 
 For questions, data requests, or collaboration:
 
-- **Yu Zhang** — [y.zhang23@surrey.ac.uk](mailto:y.zhang23@surrey.ac.uk) | [LinkedIn](https://www.linkedin.com/in/yurbro/)
+- **Yu Zhang** — [yu.zhang@surrey.ac.uk](mailto:yu.zhang@surrey.ac.uk) | [LinkedIn](https://www.linkedin.com/in/yurbro/)
 - **Prof. Tao Chen** (Corresponding Author) — University of Surrey
 
 ---
