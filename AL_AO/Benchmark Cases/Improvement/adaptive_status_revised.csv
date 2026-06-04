@@ -1,0 +1,11 @@
+benchmark,dim,winner,adaptive_status
+Ackley,3,Adaptive,best
+Ackley,5,BO-UCB-fixed,worse
+Rastrigin,3,BO-EI-fixed,worse
+Rastrigin,5,BO-EI-fixed,worse
+Zakharov,3,BO-POI-fixed,worse
+Zakharov,5,BO-POI-fixed,worse
+Griewank,3,Adaptive,best
+Griewank,5,Adaptive,best
+Sphere,3,BO-UCB-fixed,worse
+Sphere,5,BO-UCB-fixed,worse

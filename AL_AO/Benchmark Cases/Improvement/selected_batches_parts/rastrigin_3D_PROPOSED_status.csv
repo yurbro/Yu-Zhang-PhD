@@ -1,0 +1,11 @@
+benchmark,dim,method,seed,iterations,elapsed_seconds,timestamp
+rastrigin,3,Adaptive,30,30,1432.378,2026-05-28T22:09:36.121339
+rastrigin,3,Adaptive,31,30,1281.219,2026-05-28T22:30:57.343997
+rastrigin,3,Adaptive,32,30,1265.998,2026-05-28T22:52:03.347607
+rastrigin,3,Adaptive,33,30,1181.187,2026-05-28T23:11:44.540737
+rastrigin,3,Adaptive,34,30,1223.049,2026-05-28T23:32:07.597203
+rastrigin,3,Adaptive,35,30,1301.793,2026-05-28T23:53:49.394652
+rastrigin,3,Adaptive,36,30,1321.41,2026-05-29T00:15:50.809494
+rastrigin,3,Adaptive,37,30,1291.828,2026-05-29T00:37:22.643083
+rastrigin,3,Adaptive,38,30,1344.699,2026-05-29T00:59:47.347645
+rastrigin,3,Adaptive,39,30,1481.015,2026-05-29T01:24:28.369756

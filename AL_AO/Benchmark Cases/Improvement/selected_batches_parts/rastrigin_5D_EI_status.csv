@@ -1,0 +1,11 @@
+benchmark,dim,method,seed,iterations,elapsed_seconds,timestamp
+rastrigin,5,EI-Pareto,30,30,1611.52,2026-05-28T22:16:10.856268
+rastrigin,5,EI-Pareto,31,30,1536.511,2026-05-28T22:41:47.372221
+rastrigin,5,EI-Pareto,32,30,1622.715,2026-05-28T23:08:50.092984
+rastrigin,5,EI-Pareto,33,30,1469.961,2026-05-28T23:33:20.059553
+rastrigin,5,EI-Pareto,34,30,1670.36,2026-05-29T00:01:10.425869
+rastrigin,5,EI-Pareto,35,30,1520.721,2026-05-29T00:26:31.152392
+rastrigin,5,EI-Pareto,36,30,1448.34,2026-05-29T00:50:39.498156
+rastrigin,5,EI-Pareto,37,30,1653.576,2026-05-29T01:18:13.079941
+rastrigin,5,EI-Pareto,38,30,1581.304,2026-05-29T01:44:34.393748
+rastrigin,5,EI-Pareto,39,30,1623.181,2026-05-29T02:11:37.580494

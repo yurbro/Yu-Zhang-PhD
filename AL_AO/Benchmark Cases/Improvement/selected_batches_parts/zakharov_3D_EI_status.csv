@@ -1,0 +1,11 @@
+benchmark,dim,method,seed,iterations,elapsed_seconds,timestamp
+zakharov,3,EI-Pareto,30,30,724.703,2026-05-29T00:56:21.433079
+zakharov,3,EI-Pareto,31,30,828.209,2026-05-29T01:10:09.646768
+zakharov,3,EI-Pareto,32,30,861.515,2026-05-29T01:24:31.166592
+zakharov,3,EI-Pareto,33,30,771.649,2026-05-29T01:37:22.820941
+zakharov,3,EI-Pareto,34,30,820.047,2026-05-29T01:51:02.875358
+zakharov,3,EI-Pareto,35,30,843.792,2026-05-29T02:05:06.674594
+zakharov,3,EI-Pareto,36,30,840.33,2026-05-29T02:19:07.010273
+zakharov,3,EI-Pareto,37,30,863.972,2026-05-29T02:33:30.987866
+zakharov,3,EI-Pareto,38,30,829.537,2026-05-29T02:47:20.529816
+zakharov,3,EI-Pareto,39,30,865.702,2026-05-29T03:01:46.238100

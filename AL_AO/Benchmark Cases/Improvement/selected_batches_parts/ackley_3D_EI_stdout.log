@@ -1,0 +1,11 @@
+Running 1 benchmark-dim-method cells, 10 seeds each, 30 iterations per seed.
+ackley 3D EI-Pareto seed=30 (30 iterations, popsize=10, gen=50)
+ackley 3D EI-Pareto seed=31 (30 iterations, popsize=10, gen=50)
+ackley 3D EI-Pareto seed=32 (30 iterations, popsize=10, gen=50)
+ackley 3D EI-Pareto seed=33 (30 iterations, popsize=10, gen=50)
+ackley 3D EI-Pareto seed=34 (30 iterations, popsize=10, gen=50)
+ackley 3D EI-Pareto seed=35 (30 iterations, popsize=10, gen=50)
+ackley 3D EI-Pareto seed=36 (30 iterations, popsize=10, gen=50)
+ackley 3D EI-Pareto seed=37 (30 iterations, popsize=10, gen=50)
+ackley 3D EI-Pareto seed=38 (30 iterations, popsize=10, gen=50)
+ackley 3D EI-Pareto seed=39 (30 iterations, popsize=10, gen=50)

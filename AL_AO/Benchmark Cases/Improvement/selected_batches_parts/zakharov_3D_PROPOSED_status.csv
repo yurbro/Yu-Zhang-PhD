@@ -1,0 +1,11 @@
+benchmark,dim,method,seed,iterations,elapsed_seconds,timestamp
+zakharov,3,Adaptive,30,30,859.042,2026-05-29T01:39:03.475628
+zakharov,3,Adaptive,31,30,914.65,2026-05-29T01:54:18.129435
+zakharov,3,Adaptive,32,30,904.831,2026-05-29T02:09:22.966329
+zakharov,3,Adaptive,33,30,959.767,2026-05-29T02:25:22.739853
+zakharov,3,Adaptive,34,30,896.913,2026-05-29T02:40:19.659164
+zakharov,3,Adaptive,35,30,947.094,2026-05-29T02:56:06.758978
+zakharov,3,Adaptive,36,30,900.856,2026-05-29T03:11:07.620826
+zakharov,3,Adaptive,37,30,937.415,2026-05-29T03:26:45.040959
+zakharov,3,Adaptive,38,30,929.39,2026-05-29T03:42:14.437037
+zakharov,3,Adaptive,39,30,992.859,2026-05-29T03:58:47.300835
