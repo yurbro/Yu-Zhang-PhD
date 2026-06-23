@@ -1,0 +1,115 @@
+{
+  "q_scale": 3008.198194823261,
+  "q_scale_source": "fixed by codex_task_24train6test_baseline.md; artifact cfg q_scale was not read",
+  "data_xlsx": "data/IVRT-Pure.xlsx",
+  "split_definition": {
+    "train": "first 24 rows from Formulas-train and Release-train",
+    "excluded": "rows 25-30 from Formulas-train and Release-train",
+    "test": "all 6 rows from Formulas-test and Release-test"
+  },
+  "time_points": [
+    0.0,
+    0.5,
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0,
+    6.0
+  ],
+  "release_columns": [
+    "R_t1",
+    "R_t2",
+    "R_t3",
+    "R_t4",
+    "R_t5",
+    "R_t6",
+    "R_t7"
+  ],
+  "c_bounds": {
+    "C1": [
+      20.0,
+      30.0
+    ],
+    "C2": [
+      10.0,
+      20.0
+    ],
+    "C3": [
+      10.0,
+      20.0
+    ]
+  },
+  "run_no": {
+    "train_first_24": [
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5",
+      "F6",
+      "F7",
+      "F8",
+      "F9",
+      "F10",
+      "F11",
+      "F12",
+      "F13",
+      "F14",
+      "F15",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6",
+      "S7",
+      "S8",
+      "S9"
+    ],
+    "excluded_original_train_6": [
+      "S10",
+      "Opt-2",
+      "Opt-4",
+      "Opt-6",
+      "Opt-7",
+      "Opt-10"
+    ],
+    "test_6": [
+      "Opt-2-1",
+      "Opt-2-4",
+      "Opt-2-5",
+      "Opt-2-7",
+      "Opt-2-8",
+      "Opt-2-10"
+    ]
+  },
+  "train": {
+    "formulation_rows": 24,
+    "curve_rows": 192,
+    "endpoint_rows": 24,
+    "missing_q_values": 0
+  },
+  "test": {
+    "formulation_rows": 6,
+    "curve_rows": 48,
+    "endpoint_rows": 6,
+    "missing_q_values": 0
+  },
+  "leak_checks": {
+    "train_test_run_no_overlap": [],
+    "train_test_formulation_condition_overlap": [],
+    "excluded_run_no_in_train": [],
+    "excluded_run_no_in_test": [],
+    "any_train_test_leakage": false,
+    "split_level": "formulation-level by Run No"
+  },
+  "outputs": {
+    "curve_train": "revision_validation_24train6test/data/canonical_curve_train_24.csv",
+    "curve_test": "revision_validation_24train6test/data/canonical_curve_test_6.csv",
+    "endpoint_train": "revision_validation_24train6test/data/canonical_endpoint_train_24.csv",
+    "endpoint_test": "revision_validation_24train6test/data/canonical_endpoint_test_6.csv",
+    "config": "revision_validation_24train6test/config/revision_24train6test_config.json",
+    "report": "revision_validation_24train6test/reports/00_dataset_24train6test_report.md"
+  }
+}

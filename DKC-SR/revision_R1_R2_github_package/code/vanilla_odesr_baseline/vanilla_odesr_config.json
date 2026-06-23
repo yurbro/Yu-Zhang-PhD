@@ -1,0 +1,94 @@
+{
+  "q_scale": 3008.198194823261,
+  "q_scale_source": "fixed by vanilla ODE-SR task; artifact q_scale is not read or used",
+  "dataset_files": {
+    "curve_train": "revision_validation_24train6test/data/canonical_curve_train_24.csv",
+    "curve_test": "revision_validation_24train6test/data/canonical_curve_test_6.csv",
+    "endpoint_train": "revision_validation_24train6test/data/canonical_endpoint_train_24.csv",
+    "endpoint_test": "revision_validation_24train6test/data/canonical_endpoint_test_6.csv"
+  },
+  "excluded_rows_not_used": [
+    "S10",
+    "Opt-2",
+    "Opt-4",
+    "Opt-6",
+    "Opt-7",
+    "Opt-10"
+  ],
+  "variables_available": [
+    "Q",
+    "C1",
+    "C2",
+    "C3"
+  ],
+  "primitive_names": [
+    "add",
+    "sub",
+    "mul",
+    "div",
+    "pow2"
+  ],
+  "softplus_absent": true,
+  "variable_inclusion_constraint": "none; variable retention is audited after fitting",
+  "retained_components": [
+    "Q, C1, C2, C3 as available variables",
+    "ODE replay framework",
+    "same 24 train + 6 held-out test split",
+    "fixed q_scale = 3008.198194823261",
+    "protected division",
+    "finite-value failure handling",
+    "RK4 integration with substeps",
+    "complexity penalty",
+    "tree-length limit"
+  ],
+  "removed_domain_knowledge_components": [
+    "softplus primitive",
+    "hard nonnegative RHS",
+    "hard nonpositive df/dQ",
+    "formulation-gradient sign prior",
+    "gradient magnitude/effect filters",
+    "Q-sensitivity penalty",
+    "denominator-Q physical penalty",
+    "nonnegative release prediction clamp"
+  ],
+  "full": {
+    "mode": "full",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "pop_size": 300,
+    "ngen": 30,
+    "hall_of_fame_size": 20
+  },
+  "dryrun": {
+    "mode": "dryrun",
+    "seeds": [
+      0
+    ],
+    "pop_size": 80,
+    "ngen": 3,
+    "hall_of_fame_size": 10
+  },
+  "gp": {
+    "cxpb": 0.6,
+    "mutpb": 0.4,
+    "tournsize": 5,
+    "tree_len_max": 25,
+    "init_depth_min": 1,
+    "init_depth_max": 4,
+    "ephemeral_range": [
+      -2.0,
+      2.0
+    ],
+    "substeps": 8,
+    "adapt_refine_max": 6,
+    "dt_floor": 1e-06,
+    "qcap_factor": 1.5,
+    "alpha_complexity": 0.0005
+  },
+  "default_run_mode": "full"
+}

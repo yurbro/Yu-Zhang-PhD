@@ -1,0 +1,6 @@
+model_or_group,n_successful_seeds,test_curve_RMSE_mean,test_curve_RMSE_sd,test_curve_RMSE_best,test_curve_R2_best,Q6_RMSE_best,formulation_variable_count,active_sensitivity_count,Q6_range_design_grid,structural_class,valid_for_formulation_optimisation
+DKC-SR selected equation,1,461.2573251316231,0.0,461.2573251316231,0.796125970622733,959.3831200530536,3,3,2425.7504998313734,structurally_valid,True
+Best conventional static/curve baseline (PLS regression),1,507.95718921574274,0.0,507.95718921574274,0.7527538277293319,803.0292299126946,not_applicable,not_applicable,not_applicable,static_baseline,not_applicable
+Vanilla ODE-SR mean +/- SD,5,572.8603290591136,14.411662362848006,549.9486112834611,0.7101858582008097,914.4785607628486,0.0,0.0,0.0,degenerate_for_optimisation,0/5
+Best vanilla ODE-SR seed 0 by curve RMSE,1,549.9486112834611,0.0,549.9486112834611,0.7101858582008097,914.4785607628486,0,0,0.0,degenerate_for_optimisation,False
+Constraint-relaxed operator-matched SR (supplementary) best seed 2,1,240.56609303447,0.0,240.56609303447,0.9445445563436872,373.6700084311833,3,3,1396.4501962762654,structurally_valid,True

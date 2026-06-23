@@ -1,0 +1,5 @@
+model_or_group,negative_Q_prediction_rate,non_monotonic_curve_rate,negative_RHS_rate,positive_dfdQ_rate,numerical_failure_rate,extreme_Q6_rate,best_Q6,best_is_boundary,optimisation_failure_rate
+DKC-SR selected equation,0.0,0.0,0.0,0.429,0.0,0.0,2425.750499831374,False,0.0
+Vanilla ODE-SR mean +/- SD,0.0,0.0,0.0,0.0,0.0,0.0,2191.57006639465,5/5,0.0
+Best vanilla ODE-SR seed 0,0.0,0.0,0.0,0.0,0.0,0.0,2230.7440871171284,True,0.0
+Constraint-relaxed operator-matched SR (supplementary) best seed 2,0.0,0.0,0.0,,0.0,0.0,2965.8810299152706,True,0.0

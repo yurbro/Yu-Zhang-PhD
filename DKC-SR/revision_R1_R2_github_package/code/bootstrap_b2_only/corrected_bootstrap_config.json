@@ -1,0 +1,55 @@
+{
+  "q_scale": 3008.198194823261,
+  "a_fixed": 2.0,
+  "a_refitted": false,
+  "b2_original": 2.3550290604627118,
+  "b2_refit_bounds": [
+    1e-06,
+    100.0
+  ],
+  "initial_values_for_full_train_sanity": [
+    0.5,
+    1.0,
+    2.3550290604627118,
+    5.0,
+    10.0
+  ],
+  "n_bootstrap": 500,
+  "random_seed": 42,
+  "data_files": {
+    "curve_train": "revision_validation_24train6test/data/canonical_curve_train_24.csv",
+    "curve_test": "revision_validation_24train6test/data/canonical_curve_test_6.csv",
+    "endpoint_train": "revision_validation_24train6test/data/canonical_endpoint_train_24.csv",
+    "endpoint_test": "revision_validation_24train6test/data/canonical_endpoint_test_6.csv"
+  },
+  "excluded_rows_kept_excluded": [
+    "S10",
+    "Opt-2",
+    "Opt-4",
+    "Opt-6",
+    "Opt-7",
+    "Opt-10"
+  ],
+  "excluded_rows_present_in_canonical_train_or_test": [],
+  "expression_sources": {
+    "artifacts/archive/ivrt-pair-251007/best_sympy.txt": "log(exp(2*ARG0) + 1)/((ARG0**2 - ARG1/ARG3 + ARG2)**2 + 2.3550290604627118)",
+    "artifacts/archive/ivrt-pair-251007/best_infix.txt": "(log(1+exp((Q + Q))) / (((C2 - ((C1 / C3) - (Q)**2)))**2 + (-1.5346103937034676)**2))",
+    "evaluation/used_expr.txt": "log(exp(2*Q) + 1)/((Q**2 - C1/C3 + C2)**2 + 2.3550290604627118)"
+  },
+  "expression_checks": {
+    "numerator_softplus_2": true,
+    "b2_original_confirmed": true,
+    "b2_original_explicit": true,
+    "b2_original_from_squared_infix": true,
+    "squared_offsets_seen": [
+      2.3550290604627118
+    ]
+  },
+  "replay_implementation_source": "revision_validation_robustness_24train6test/_robustness_common.py wrapped by revision_validation_bootstrap_correction_24train6test/_corrected_bootstrap_common.py",
+  "replay_equation": "dQtilde/dt = softplus(2*Qtilde) / ((Qtilde**2 - C1n/C3n + C2n)**2 + b2)",
+  "replay_differences_from_previous_bootstrap": [
+    "a is fixed at 2.0 and never optimized.",
+    "Only b2 is eligible for refitting.",
+    "No symbolic structure search or DKC-SR retraining is performed."
+  ]
+}
