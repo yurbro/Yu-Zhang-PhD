@@ -1,6 +1,6 @@
-# CMA-ES 参数敏感度分析
+# CMA-ES sensitivity analysis
 - objective: softcap
-- q_scale: 975.1784004393666
+- q_scale: 3008.198194823261
 - cap/lambda_pen: 3500.0/1.0
 - pops: [50, 100, 200]
 - iters: [50, 100, 200]
