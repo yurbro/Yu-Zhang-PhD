@@ -108,7 +108,7 @@ Collaboration enquiries related to AI for formulation design, dermal drug delive
 
 ## Acknowledgements
 
-Yu Zhang's PhD research is supported by the **China Scholarship Council** in partnership with the **University of Surrey** (Grant No. 202306440060).
+Yu Zhang's PhD research is supported by the **China Scholarship Council** in partnership with the **University of Surrey**.
 
 ## License
 
