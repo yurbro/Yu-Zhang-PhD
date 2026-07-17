@@ -37,8 +37,8 @@ The broader objective is to develop an increasingly autonomous formulation-desig
 
 | Project | Purpose | Related output |
 |---|---|---|
-| [`AL_AO/`](AL_AO/) | Active learning-based adaptive batch optimisation using GPR, NSGA-II, expected improvement and hypervolume contribution. | [CHERD article](https://doi.org/10.1016/j.cherd.2026.07.035) |
-| [`EDMA/`](EDMA/) | Early decision-making for stopping unpromising topical formulation experiments before completion. | [C&CE article](https://doi.org/10.1016/j.compchemeng.2025.109224) |
+| [`AL_AO/`](AL_AO/) | Active learning-based adaptive batch optimisation using GPR, NSGA-II, expected improvement and hypervolume contribution. | [Chemical Engineering Research and Design](https://doi.org/10.1016/j.cherd.2026.07.035) |
+| [`EDMA/`](EDMA/) | Early decision-making for stopping unpromising topical formulation experiments before completion. | [Computers & Chemical Engineering](https://doi.org/10.1016/j.compchemeng.2025.109224) |
 | [`DKC-SR/`](DKC-SR/) | Domain-knowledge-constrained symbolic regression for interpretable dermal drug-release modelling and optimisation. | Manuscript and reproducibility materials |
 | [`LlmDM/`](LlmDM/) | LLM-assisted literature screening, evidence extraction and construction of dermal permeation datasets. | PermeationNet and related data-engineering workflows |
 
