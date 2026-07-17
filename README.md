@@ -98,7 +98,7 @@ Please cite the publication associated with the specific code or dataset that yo
 
 ## Contact
 
-**Yu Zhang**  
+**Yu Zhang (张誉)**  
 School of Chemistry and Chemical Engineering  
 University of Surrey, Guildford, UK  
 Email: [yu.zhang@surrey.ac.uk](mailto:yu.zhang@surrey.ac.uk)  
