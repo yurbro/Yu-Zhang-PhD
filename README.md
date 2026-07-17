@@ -48,13 +48,13 @@ The broader objective is to develop an increasingly autonomous formulation-desig
 
 ### PhD-led outputs
 
-1. ****Zhang, Y.**, Xiao, Y., Wang, X., Tsaoulidis, D., & Chen, T.** (2026). Active learning-based adaptive optimisation for developing dermal drug formulations. *Chemical Engineering Research and Design*.  
+1. **Zhang, Y., Xiao, Y., Wang, X., Tsaoulidis, D., & Chen, T.** (2026). Active learning-based adaptive optimisation for developing dermal drug formulations. *Chemical Engineering Research and Design*.  
    [DOI: 10.1016/j.cherd.2026.07.035](https://doi.org/10.1016/j.cherd.2026.07.035) · [Code](AL_AO/)
 
-2. ****Zhang, Y.**, Xiao, Y., Tsaoulidis, D., & Chen, T.** (2025). An early decision-making algorithm for accelerating topical drug formulation optimisation. *Computers & Chemical Engineering, 201*, 109224.  
+2. **Zhang, Y., Xiao, Y., Tsaoulidis, D., & Chen, T.** (2025). An early decision-making algorithm for accelerating topical drug formulation optimisation. *Computers & Chemical Engineering, 201*, 109224.  
    [DOI: 10.1016/j.compchemeng.2025.109224](https://doi.org/10.1016/j.compchemeng.2025.109224) · [Code](EDMA/)
 
-3. ****Zhang, Y.**, Xiao, Y., Chen, C., Tsaoulidis, D., Yang, K., & Chen, T.** (2026). Autonomous AI-Driven Design for Skin Product Formulations. *Advanced Intelligent Discovery*, e70100.  
+3. **Zhang, Y., Xiao, Y., Chen, C., Tsaoulidis, D., Yang, K., & Chen, T.** (2026). Autonomous AI-Driven Design for Skin Product Formulations. *Advanced Intelligent Discovery*, e70100.  
    [DOI: 10.1002/aidi.202500239](https://doi.org/10.1002/aidi.202500239) · [Open-access article](https://advanced.onlinelibrary.wiley.com/doi/full/10.1002/aidi.202500239)
 
 ### Selected team and collaborative publications
@@ -62,10 +62,10 @@ The broader objective is to develop an increasingly autonomous formulation-desig
 4. **Xiao, Y., Ilić, T., Tošić, A., Ivković, B., Tsaoulidis, D., Savić, S., & Chen, T.** (2025). Topical drug formulation for enhanced permeation: A comparison of Bayesian optimisation and response surface methodology with an ibuprofen-loaded poloxamer 407-based formulations case study. *International Journal of Pharmaceutics, 672*, 125306.  
    [DOI: 10.1016/j.ijpharm.2025.125306](https://doi.org/10.1016/j.ijpharm.2025.125306)
 
-5. **Xiao, Y., Zhu, M., **Zhang, Y.**, Tsaoulidis, D., & Chen, T.** (2026). Confidence-bound early stopping of experiments with sequential calibration. *Chemical Engineering Research and Design, 230*, 756–766.  
+5. **Xiao, Y., Zhu, M., Zhang, Y., Tsaoulidis, D., & Chen, T.** (2026). Confidence-bound early stopping of experiments with sequential calibration. *Chemical Engineering Research and Design, 230*, 756–766.  
    [DOI: 10.1016/j.cherd.2026.05.013](https://doi.org/10.1016/j.cherd.2026.05.013)
 
-6. **Xiao, Y., Chen, C., **Zhang, Y.**, Tsaoulidis, D., & Chen, T.** (2026). A modelling-based comparison of IVRT and synthetic-membrane permeation for early formulation screening. *RSC Pharmaceutics*.  
+6. **Xiao, Y., Chen, C., Zhang, Y., Tsaoulidis, D., & Chen, T.** (2026). A modelling-based comparison of IVRT and synthetic-membrane permeation for early formulation screening. *RSC Pharmaceutics*.  
    [DOI: 10.1039/D6PM00035E](https://doi.org/10.1039/D6PM00035E)
 
 These publications provide the experimental foundation, methodological development and collaborative context for the projects collected in this repository.
